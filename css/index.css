@@ -5,7 +5,7 @@ body
         }
         .otherform
         {
-            padding-top: 250px;
+            padding-top: 150px;
             font-display: white;
              margin:auto;
              display:table;
@@ -15,7 +15,7 @@ body
         {
             align-content: center;
 
-            height: 400px;
+            height: 600px;
             width: 700px;
         }
         .input{

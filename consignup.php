@@ -6,6 +6,8 @@ session_start();
     $pass = $_POST['newpass'];
     $confirm = $_POST['confirm'];
     $mail = $_POST['email'];
+    $first = $_POST['first'];
+    $last = $_POST['last'];
     if (strlen($pass) < 6)
     {
        
@@ -83,8 +85,10 @@ try{
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $con->query("Use matcha");
         $encrypt = password_hash($pass, PASSWORD_BCRYPT);
-		$stmt = $con->prepare("INSERT INTO `users` (`User`, `Pass`, `E-mail`, `Active`, `token`)
-		VALUES(:user, :pass, :email, '0', :token)");
+		$stmt = $con->prepare("INSERT INTO `users` (`first`, `surname`, `User`, `Pass`, `E-mail`, `Active`, `token`)
+        VALUES(:firstname, :surname, :user, :pass, :email, '0', :token)");
+        $stmt->bindValue(':firstname', $first);
+        $stmt->bindValue(':surname', $last);
         $stmt->bindValue(':user', $user);
         $stmt->bindValue(':pass', $encrypt);
         $stmt->bindValue(':email', $mail);

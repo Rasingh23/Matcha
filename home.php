@@ -1,5 +1,26 @@
 <?php session_start();
+var_dump($_SESSION);
+try{
 
+  $con = new PDO("mysql:host=localhost", "root", "123456");
+  $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $con->query("USE matcha");
+  $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
+  $stmt->bindParam(':user', $_SESSION['username']);
+  $stmt->execute();
+  $info = $stmt->fetch(PDO::FETCH_ASSOC);
+  $new = json_decode($info['info'], true) ;
+  $_SESSION['dp'] = "img/".$new['dp']; 
+  $_SESSION['bio'] = $new['bio'];
+  $_SESSION['age'] = $new['age'];
+  $GLOBALS['a'] = $new;
+  $con = null;
+}
+catch (PDOException $e) {
+
+  print "Error : ".$e->getMessage()."<br/>";
+  die();
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +33,7 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="js/main.js"></script>
+<script src="js/upload.js"></script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
@@ -65,7 +87,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
+  <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
     <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">1</span></button>     
@@ -109,12 +131,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img src="img/bg.jpg" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <h4 class="w3-center"><?php echo $_SESSION["username"] ?></h4>
+         <p class="w3-center"><img src=<?php echo $_SESSION['dp'];?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $_SESSION['age']?> years old</p>
         </div>
       </div>
       <br>
@@ -126,17 +148,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
         <div class="w3-container">
           <p>Interests</p>
           <p>
-            <span class="w3-tag w3-small w3-theme-d5">News</span>
-            <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
-            <span class="w3-tag w3-small w3-theme-d3">Labels</span>
-            <span class="w3-tag w3-small w3-theme-d2">Games</span>
-            <span class="w3-tag w3-small w3-theme-d1">Friends</span>
-            <span class="w3-tag w3-small w3-theme">Games</span>
-            <span class="w3-tag w3-small w3-theme-l1">Friends</span>
-            <span class="w3-tag w3-small w3-theme-l2">Food</span>
-            <span class="w3-tag w3-small w3-theme-l3">Design</span>
-            <span class="w3-tag w3-small w3-theme-l4">Art</span>
-            <span class="w3-tag w3-small w3-theme-l5">Photos</span>
+          <?php
+          foreach ($GLOBALS['a']['tags'] as $nu) {
+            echo '<span class="w3-tag w3-small w3-theme-d5">'.$nu.'</span><br>';
+          }
+            //
+            ?>
           </p>
         </div>
       </div>
@@ -173,15 +190,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     </div>
     
     <!-- Middle Column -->
-    <div class="w3-col m8" style="padding:10px">
+    <div class="w3-col m7" style="padding:0px 10px 10px 10px">
   
-      <div class="w3-row-padding">
+      <div class="w3-row">
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">About me:</h6>
               <p contenteditable="true" class="w3-border w3-padding">
-                  
+                  <?php echo $_SESSION['bio'] ?>
               </p>
               <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Update</button> 
             </div>
@@ -189,31 +206,61 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
         </div>
       </div>
       <br>
-      <div id="results" class="w3-col m3">
-.....<p id="testres"></p>
-</div>
-            <div class="w3-third">
-      <img src="img/bg.jpg" style="width:100%" onclick="onClick(this)" alt="A boy surrounded by beautiful nature">
-      <img src="img/bg.jpg" style="width:100%" onclick="onClick(this)" alt="What a beautiful scenery this sunset">
-    </div>
-    <div class="w3-third">
-
-      <img src="img/bg.jpg" style="width:100%" onclick="onClick(this)" alt="Waiting for the bus in the desert">
-      <img src="img/bg.jpg" style="width:100%" onclick="onClick(this)" alt="Nature again.. At its finest!">
-    </div>
-    
-    <div class="w3-third">
-      <img src="img/bg.jpg" style="width:100%" onclick="onClick(this)" alt="Canoeing again">
-
-    </div>
+      <div class="w3-third" style="padding:5px 5px 5px 5px;">
+      <div class=" w3-margin-bottom" >
+      <img  id='img1'class="w3-round-medium " style="width:100%" onclick="onClick(this)" alt="A boy surrounded by beautiful nature">
       </div>
-    <!-- End Middle Column -->
+      <img id='img2'class="w3-round-medium" style="width:100%" onclick="onClick(this)" alt="What a beautiful scenery this sunset">
     </div>
+    <div class="w3-third" style=" padding:5px 5px 5px 5px">
+
+<div class=" w3-margin-bottom" >
+      <img id='img3'class="w3-round-medium" style="width:100%" onclick="onClick(this)" alt="Waiting for the bus in the desert">
+      </div>
+      <img id='img4'class="w3-round-medium" style="width:100%" onclick="onClick(this)" alt="Nature again.. At its finest!">
+    </div>
+    <br>
+
+       <input type="submit" onclick="newimg()" value="Upload Ajax Image" id="add" name="submit">
+        <input type="file" name="userpic" id="userpic" style="display:none">
+        <img id="newimg" style="display:none;">
+    <br> <button>edit</button>
+    <br> <button id="del">delete</button>
+      </div> 
+    <!-- End Middle Column -->
+
     
     <!-- Right Column -->
     
+  <!-- <div style="float:right;border:solid; height:500px;">
+  hi -->
+    
+    <!-- Right Column -->
+    <div class="w3-col m2 w3-right">
 
+      
+      <div class="w3-card w3-round w3-white w3-center" id="results" class="w3-col m3">
+.....<p id="testres"></p>
+</div>
+        <!-- <div class="w3-container">
+          <p>Friend Request</p>
+          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
+          <span>Jane Doe</span>
+          <div class="w3-row w3-opacity">
+            <div class="w3-half">
+              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+            </div>
+            <div class="w3-half">
+              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+            </div>
+          </div>
+        </div> -->
+        <br>
+ 
+      <br>
+      
     <!-- End Right Column -->
+    </div>
     </div>
     
   <!-- End Grid -->
@@ -266,6 +313,9 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+
+
+
 </script>
 
 </body>

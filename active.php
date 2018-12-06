@@ -24,6 +24,49 @@ echo "<br><br> NEW EMAIL:".$email = $_GET["email"];
         print "Error : ".$e->getMessage()."<br/>";
         die();
     }
-    echo "<meta http-equiv='refresh' content='0,url=userdetails.php'>";
     echo '<script>alert("Your account has been activated successfully")</script>';
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="jquery-3.3.1.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form action='userdetails.php' method='get' id="form">
+    <input type='hidden' value=<?php $_GET["email"]?>>
+    </form>
+
+</body>
+</html>
+<script>
+var parts = window.location.search.substr(1).split("&");
+var $_GET = {};
+for (var i = 0; i < parts.length; i++) {
+    var temp = parts[i].split("=");
+    $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+}
+alert($_GET['email']);
+const form = document.createElement('form');
+form.action = 'userdetails.php';
+form.method = 'get';
+
+const homeInput = document.createElement('input');
+homeInput.type = 'hidden';
+homeInput.name = 'email';
+homeInput.value = $_GET['email'];
+form.appendChild(homeInput);
+document.body.appendChild(form);
+form.submit();
+/* 
+form = document.getElementById("form");
+$(document).ready(function(){   
+    alert($("form").serialize());
+});
+ */
+/* form.submit(); */
+</script>

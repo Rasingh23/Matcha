@@ -47,7 +47,7 @@ function fetchnames(textsrch){
           if(chkstat.length > 0){
        for (var i = 0; i < chkstat.length; i++)
        {
-        document.getElementById("results").innerHTML += chkstat[i]['User'];
+        document.getElementById("results").innerHTML += chkstat[i]['User']+"<br>";
         //document.getElementById("testres").innerHTML += chkstat[i]['User'];
        }
     }else {

@@ -15,13 +15,18 @@ session_start();
 <body>
 <div class="navbar" style="color:white;float:right">
 <form action="login.php" method="post" style="float:right; margin:15px 50px">
-Username <input type="text" name="user" placeholder="Enter Username" required>      Password </label><input type="password" placeholder="Enter Password" name="newpass" required>
+Username <input type="text" name="usn" placeholder="Enter Username" required>      Password </label><input type="password" placeholder="Enter Password" name="pwd" required>
     <button type="submit" style="border:solid 1px;">Sign in</button>
     </form> 
 </div>
     <form class ="otherform" action="consignup.php" method="post">
         <fieldset>
-        <b>Username</b>
+        <br>
+        <b>First Name</b>
+        <br><input  class="input"  type="text" name="first" placeholder="Enter First name" required><br>
+        <br><b>Surname</b>
+        <br><input  class="input"  type="text" name="last" placeholder="Enter Surname" required><br>
+        <br><b>Username</b>
         <br><input  class="input"  type="text" name="user" placeholder="Enter Username" required><br>
        <br><label for="email"><b>Email</b></label><br>
       <input  class="input" type="text" placeholder="Enter Email" name="email" required><br>
