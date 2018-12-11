@@ -23,6 +23,11 @@ function getNames(){
         $stmt->bindParam(':srch', $srchtxt);
         $stmt->execute();
         $info = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       /*  foreach ($info as $key => $value) {
+            if ($value[$key]['user'] == $_SESSION['username'])
+                unset($value[$key]);
+        } */
+        /*  DONT LET THE NIGGA SHOW UP IN RESULTS IF HE DA 1 LOGGED IN */
        echo json_encode($info);
     }
     catch (PDOException $e) {

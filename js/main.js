@@ -34,7 +34,6 @@ function fetchnames(textsrch){
         chkstat = JSON.parse(xhr.responseText);
        // alert(chkstat['User']);
        //alert(chkstat.length);
-        console.log(chkstat);
 
 /*         Object.keys(chkstat).forEach(function(key) {
 
@@ -47,7 +46,16 @@ function fetchnames(textsrch){
           if(chkstat.length > 0){
        for (var i = 0; i < chkstat.length; i++)
        {
-        document.getElementById("results").innerHTML += chkstat[i]['User']+"<br>";
+    
+         /* document.getElementById("results").innerHTML += chkstat[i]['User']+"<br>";  */
+         var a = document.createElement('a');
+var linkText = document.createTextNode(chkstat[i]['User']);
+a.appendChild(linkText);
+a.title = chkstat[i]['User'] + '<br>';
+a.href = "localhost:8080/Matcha/search.php?user="+chkstat[i]['User'];
+a.target = "blank";
+document.getElementById("results").appendChild(a);
+ document.getElementById("results").innerHTML += "<br>"; 
         //document.getElementById("testres").innerHTML += chkstat[i]['User'];
        }
     }else {

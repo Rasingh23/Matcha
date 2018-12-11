@@ -10,33 +10,72 @@
                      document.getElementById('newimg').setAttribute('src', e.target.result);
                  };
                  reader.readAsDataURL(imageupload.files[0]); */
-                 ajaxupload();
+                  ajaxupload(); 
              }
         
          });
  
      }
+     function ajaxdisplay() {
+        var hr = new XMLHttpRequest();
+        var url = "display.php";
+         hr.open("POST", url, true);
+        hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         hr.onreadystatechange = function() {
+            if(hr.readyState == 4 && hr.status == 200) {
+                var return_data = hr.responseText;
+                var test = JSON.parse(return_data);
+                var arrayLength = test.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    console.log(test[i]['img']);
+                    document.getElementById('img'+i).setAttribute('src',test[i]['img']);
+                    document.getElementById('img'+i).style.display = "block";
+                } 
+     /*            document.getElementById('img0').setAttribute('src',test[0]['img']);
+                document.getElementById('img1').setAttribute('src',test[1]['img']);
+                document.getElementById('img2').setAttribute('src',test[2]['img']);
+                if (arrayLength == 4)
+                {
+                    document.getElementById('img3').setAttribute('src',test[3]['img']);
+                } */
+            }
+        }
+        hr.send(); 
+    }
 
-     function ajaxupload() {
-        alert("ajuploaddh running");
+
+    $('document').ready(function (){
+        console.log("hi");
+         ajaxdisplay();  
+    });
+
+    
+
+
+
+
+
+    function ajaxupload() {
         var pic = document.getElementById("userpic").files[0];
-        console.log(pic);
-
+       
+    
         var hr = new XMLHttpRequest();
         var url = "upload.php";
         var formData = new FormData();
         formData.append("userpic", pic);
+        /* var formData="pic=" +pic['name']+"&obj="+pic; */
          hr.open("POST", url, true);
+        // hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
          hr.onreadystatechange = function() {
             if(hr.readyState == 4 && hr.status == 200) {
                 var return_data = hr.responseText;
-               alert(return_data);
-               alert('damn');
+                   ajaxdisplay(); 
             }
         }
         hr.send(formData); 
-    
 
+        document.getElementById("form").reset();
+     
        /*  
         var hr = new XMLHttpRequest();
          var url = "upload.php";
@@ -54,4 +93,4 @@
          hr.send(formData); 
      */
        
-        }
+        } 

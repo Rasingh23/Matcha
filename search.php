@@ -1,20 +1,21 @@
 <?php session_start();
-var_dump($_SESSION);
 try{
 
+    echo $_GET['user'];
   $con = new PDO("mysql:host=localhost", "root", "123456");
   $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $con->query("USE matcha");
   $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
-  $stmt->bindParam(':user', $_SESSION['username']);
+  $stmt->bindParam(':user', $_GET['user']);
   $stmt->execute();
   $info = $stmt->fetch(PDO::FETCH_ASSOC);
   $new = json_decode($info['info'], true) ;
-  $_SESSION['dp'] = "img/".$new['dp']; 
-  $_SESSION['bio'] = $new['bio'];
-  $_SESSION['age'] = $new['age'];
+  $GLOBALS['dp'] = "img/".$new['dp']; 
+  $GLOBALS['bio'] = $new['bio'];
+  $GLOBALS['age'] = $new['age'];
   $GLOBALS['a'] = $new;
   $con = null;
+  var_dump($GLOBALS["age"]);
 }
 catch (PDOException $e) {
 
@@ -34,7 +35,6 @@ catch (PDOException $e) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
-<script src="js/upload.js"></script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
@@ -132,12 +132,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center"><?php echo $_SESSION["username"] ?></h4>
-         <p class="w3-center"><img src=<?php echo $_SESSION['dp'];?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <h4 class="w3-center"><?php echo $_GET['user'] ?></h4>
+         <p class="w3-center"><img src=<?php echo $GLOBALS['dp'];?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $_SESSION['age']?> years old</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $GLOBALS['age']?> years old</p>
         </div>
       </div>
       <br>
@@ -171,21 +171,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
       <!-- Suggested -->
       
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p>Suggested</p>
-          <img src="img/bg.jpg" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-      </div>
-      </div>
+      <button class="w3-btn w3-red" style="text-shadow:1px 1px 0 #444"><b>Like</b></button>
     
     <!-- End Left Column -->
     </div>
@@ -199,9 +185,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">About me:</h6>
               <p contenteditable="true" class="w3-border w3-padding">
-                  <?php echo $_SESSION['bio'] ?>
-              </p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Update</button> 
+                  <?php echo $GLOBALS['bio'] ?>
+              </p> 
             </div>
           </div>
         </div>
@@ -221,14 +206,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <img id='img3'class="w3-round-medium" style="width:100%;display:none;" onclick="onClick(this)" alt="img3">
     </div>
     <br>
-
-       <input type="submit" onclick="newimg()" class="w3-green" value="Upload Image" id="add" name="submit">
-       <form id="form">
-        <input type="file" name="userpic" id="userpic" style="display:none">
-        </form>
-        <img id="newimg" style="display:none;">
-    <br> <button>edit</button>
-    <br> <button id="del">delete</button>
       </div> 
     <!-- End Middle Column -->
 
