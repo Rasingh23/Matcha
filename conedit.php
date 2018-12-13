@@ -2,7 +2,7 @@
 try{
     $con = new PDO("mysql:host=localhost", "root", "123456");
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $con->query("USE camagru");
+    $con->query("USE matcha");
     $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
     $stmt->bindParam(':user', $user);
     $stmt->execute();
@@ -25,7 +25,7 @@ if (isset($_POST['user']))
     {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $pass = password_hash($pass, PASSWORD_BCRYPT);
         $stmt = $con->prepare("UPDATE `users` SET `User`=:user WHERE `UserID` = :id");
         $stmt->bindValue(':id', $_SESSION['id']);
@@ -72,7 +72,7 @@ else if (isset($_POST['pass']))
     {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $pass = password_hash($pass, PASSWORD_BCRYPT);
         $stmt = $con->prepare("UPDATE `users` SET `Pass`=:pass WHERE `UserID` = :id");
         $stmt->bindValue(':id', $_SESSION['id']);
@@ -100,7 +100,7 @@ else if (isset($_POST['email']))
     {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $pass = password_hash($pass, PASSWORD_BCRYPT);
         $stmt = $con->prepare("UPDATE `users` SET `E-mail`=:email WHERE `UserID` = :id");
         $stmt->bindValue(':id', $_SESSION['id']);
@@ -124,7 +124,7 @@ else if (isset($_POST['newfirstname']))
     {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $pass = password_hash($pass, PASSWORD_BCRYPT);
         $stmt = $con->prepare("UPDATE `users` SET `first`=:firstname WHERE `UserID` = :id");
         $stmt->bindValue(':id', $_SESSION['id']);
@@ -148,7 +148,7 @@ else if (isset($_POST['newsurname']))
     {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $pass = password_hash($pass, PASSWORD_BCRYPT);
         $stmt = $con->prepare("UPDATE `users` SET `surname`=:surname WHERE `UserID` = :id");
         $stmt->bindValue(':id', $_SESSION['id']);

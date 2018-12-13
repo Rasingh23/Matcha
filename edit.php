@@ -82,7 +82,7 @@ session_start();
      try{
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE camagru");
+        $con->query("USE matcha");
         $stmt = $con->prepare("SELECT * FROM `users` WHERE `User` = :username");
         $stmt->bindValue(':username', $user);
         $stmt->execute();

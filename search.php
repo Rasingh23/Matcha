@@ -1,26 +1,25 @@
 <?php session_start();
-try{
 
-    echo $_GET['user'];
-  $con = new PDO("mysql:host=localhost", "root", "123456");
-  $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $con->query("USE matcha");
-  $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
-  $stmt->bindParam(':user', $_GET['user']);
-  $stmt->execute();
-  $info = $stmt->fetch(PDO::FETCH_ASSOC);
-  $new = json_decode($info['info'], true) ;
-  $GLOBALS['dp'] = "img/".$new['dp']; 
-  $GLOBALS['bio'] = $new['bio'];
-  $GLOBALS['age'] = $new['age'];
-  $GLOBALS['a'] = $new;
-  $con = null;
-  var_dump($GLOBALS["age"]);
-}
-catch (PDOException $e) {
+echo "hello";
+try {
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("USE matcha");
+    $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
+    $stmt->bindParam(':user', $_GET['user']);
+    $stmt->execute();
+    $info = $stmt->fetch(PDO::FETCH_ASSOC);
+    $new = json_decode($info['info'], true);
+    $GLOBALS['dp'] = "img/" . $new['dp'];
+    $GLOBALS['bio'] = $new['bio'];
+    $GLOBALS['age'] = $new['age'];
+    $GLOBALS['a'] = $new;
+    $GLOBALS['u_id'] = $info['userID'];
+    $con = null;
+} catch (PDOException $e) {
 
-  print "Error : ".$e->getMessage()."<br/>";
-  die();
+    print "Error : " . $e->getMessage() . "<br/>";
+    die();
 }
 ?>
 
@@ -35,12 +34,14 @@ catch (PDOException $e) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/like.js"></script>
+<!-- <script src="js/upload.js"></script> -->
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
 
 .search-container button {
-    float: right; 
+    float: right;
     padding: 6px 10px;
     margin-top: 8px;
     margin-right: 16px;
@@ -62,7 +63,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
  .search-container button:hover {
     background: #ccc;
   }
-  
+
   @media screen and (max-width: 600px) {
    .search-container {
       float: none;
@@ -76,7 +77,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       padding: 14px;
     }
     input[type=text] {
-      border: 1px solid #ccc;  
+      border: 1px solid #ccc;
     }
   }
 </style>
@@ -89,9 +90,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
   <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
+  <a href="chat.php"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">1</span></button>     
+    <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">1</span></button>
     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
       <a href="#" class="w3-bar-item w3-button">One new friend request</a>
     </div>
@@ -124,7 +125,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </div>
 
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
   <!-- The Grid -->
   <div class="w3-row">
     <!-- Left Column -->
@@ -132,34 +133,34 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center"><?php echo $_GET['user'] ?></h4>
-         <p class="w3-center"><img src=<?php echo $GLOBALS['dp'];?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <h4 class="w3-center" id="name"><?php echo $_GET['user'] ?></h4>
+         <p class="w3-center"><img src=<?php echo $GLOBALS['dp']; ?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $GLOBALS['age']?> years old</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $GLOBALS['age'] ?> years old</p>
         </div>
       </div>
       <br>
-      
 
-      
-      <!-- Interests --> 
+
+
+      <!-- Interests -->
       <div class="w3-card w3-round w3-white w3-hide-small">
         <div class="w3-container">
           <p>Interests</p>
           <p>
           <?php
-          foreach ($GLOBALS['a']['tags'] as $nu) {
-            echo '<span class="w3-tag w3-small w3-theme-d5">'.$nu.'</span><br>';
-          }
-            //
-            ?>
+foreach ($GLOBALS['a']['tags'] as $nu) {
+    echo '<span class="w3-tag w3-small w3-theme-d5">' . $nu . '</span><br>';
+}
+//
+?>
           </p>
         </div>
       </div>
       <br>
-      
+
        <!-- Modal for full size images on click-->
   <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
     <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
@@ -170,15 +171,47 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   </div>
 
       <!-- Suggested -->
-      
-      <button class="w3-btn w3-red" style="text-shadow:1px 1px 0 #444"><b>Like</b></button>
-    
+<?php
+
+try {
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("Use matcha");
+    $stmt = $con->prepare("SELECT * FROM `likes` WHERE `likee_id` = :id AND `liker_id` = :user");
+    $stmt->bindValue(':user', $GLOBALS['u_id']);
+    $stmt->bindValue(':id', $_SESSION['id']);
+    $stmt->execute();
+    if ($stmt->rowCount() == 0) {
+        $con->query("Use matcha");
+        $stmt = $con->prepare("SELECT * FROM `likes` WHERE `likee_id` = :user AND `liker_id` = :id");
+        $stmt->bindValue(':user', $GLOBALS['u_id']);
+        $stmt->bindValue(':id', $_SESSION['id']);
+        $stmt->execute();
+    }
+    $res = $stmt->fetch();
+    if (($res['likee_stat'] == 1 && $res['likee_id'] == $_SESSION['id']) || ($res['liker_stat'] == 1 && $res['liker_id'] == $_SESSION['id'])) {
+        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>unlike</b></button>';
+    } else if (($res['liker_stat'] == 1 && $res['likee_stat'] == 0 && $res['likee_id']) || ($res['liker_stat'] == 0 && $res['likee_stat'] == 1 && $res['liker_id'])) {
+        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like back</b></button>';
+    } else {
+        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like</b></button>';
+    }
+
+    $con = null;
+} catch (PDOException $e) {
+    print "Error : " . $e->getMessage() . "<br/>";
+    die();
+}
+
+?>
+
+
     <!-- End Left Column -->
     </div>
-    
+
     <!-- Middle Column -->
     <div class="w3-col m7" style="padding:0px 10px 10px 10px">
-  
+
       <div class="w3-row">
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
@@ -186,7 +219,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
               <h6 class="w3-opacity">About me:</h6>
               <p contenteditable="true" class="w3-border w3-padding">
                   <?php echo $GLOBALS['bio'] ?>
-              </p> 
+              </p>
             </div>
           </div>
         </div>
@@ -206,51 +239,32 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <img id='img3'class="w3-round-medium" style="width:100%;display:none;" onclick="onClick(this)" alt="img3">
     </div>
     <br>
-      </div> 
+      </div>
     <!-- End Middle Column -->
 
-    
-    <!-- Right Column -->
-    
-  <!-- <div style="float:right;border:solid; height:500px;">
-  hi -->
-    
     <!-- Right Column -->
     <div class="w3-col m2 w3-right">
-      
+
       <div class="w3-card w3-round w3-white w3-center" id="results" class="w3-col m3">
 .....
 </div>
-        <!-- <div class="w3-container">
-          <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-        </div> -->
         <br>
- 
+
       <br>
-      
+
     <!-- End Right Column -->
     </div>
     </div>
-    
+
   <!-- End Grid -->
   </div>
-  
+
 <!-- End Page Container -->
 </div>
 <br>
 
 <!-- Footer -->
-<footer class="w3-container w3-theme-d3 w3-padding-16" 
+<footer class="w3-container w3-theme-d3 w3-padding-16"
    style="
    position: fixed;
    left: 0;
@@ -261,27 +275,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   <h5>Footer</h5>
 </footer>
 
- 
-<script>
-// Accordion
-function myFunction(id) {
-    var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-theme-d1";
-    } else { 
-        x.className = x.className.replace("w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-theme-d1", "");
-    }
-}
 
+<script>
 // Used to toggle the menu on smaller screens when clicking on the menu button
 function openNav() {
     var x = document.getElementById("navDemo");
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
-    } else { 
+    } else {
         x.className = x.className.replace(" w3-show", "");
     }
 }
@@ -294,8 +295,37 @@ function onClick(element) {
 }
 
 
+ function ajaxdisplay() {
+        var hr = new XMLHttpRequest();
+        var url = "display.php";
+        var parts = window.location.search.substr(1).split("&");
+        var get = {};
+        for (var i = 0; i < parts.length; i++) {
+            var temp = parts[i].split("=");
+            get[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+        }
+         hr.open("POST", url, true);
+        hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         hr.onreadystatechange = function() {
+            if(hr.readyState == 4 && hr.status == 200) {
+                var return_data = hr.responseText;
+                 var test = JSON.parse(return_data);
+               var arrayLength = test.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    document.getElementById('img'+i).setAttribute('src',test[i]['img']);
+                    document.getElementById('img'+i).style.display = "block";
+                }
+            }
+        }
+        var user = "user="+get['user'];
+        hr.send(user);
+    }
 
+
+    $('document').ready(function (){
+         ajaxdisplay();
+    });
 </script>
 
 </body>
-</html> 
+</html>

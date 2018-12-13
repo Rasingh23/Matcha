@@ -19,6 +19,7 @@ try{
         if ($info["Active"] == 0)
         { 
             echo "<script type='text/javascript'>alert('Please activate your account');</script>";
+             echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
         }
         if(password_verify($pwd, $info['Pass']))
@@ -31,11 +32,13 @@ try{
         else
         { 
             echo "<script type='text/javascript'>alert('Incorrect Password');</script>";
+             echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
         }
     }
     else{
             echo "<script type='text/javascript'>alert('User does not exist.');</script>";
+             echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
     }
 
