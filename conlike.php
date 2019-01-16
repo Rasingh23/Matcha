@@ -38,12 +38,27 @@ if ($_POST['stat'] == 'Like') {
         $con = new PDO("mysql:host=localhost", "root", "123456");
         $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $con->query("USE matcha");
-        $stmt = $con->prepare("UPDATE `likes` SET `likee_stat`=:val WHERE `likee_id` = :id AND `liker_id` = :usid ");
-        $stmt->bindValue(':val', $_POST['liked']);
+        $stmt = $con->prepare("SELECT * from `likes` WHERE `liker_id` = :id AND `likee_id` = :usid ");
         $stmt->bindValue(':usid', $_POST['uid']);
         $stmt->bindValue(':id', $_SESSION['id']);
         $stmt->execute();
-        
+        var_dump( $stmt->fetch());
+        if ($stmt->rowCount() > 0) {
+            echo $_POST['liked'];
+            $con->query("USE matcha");
+            $stmt = $con->prepare("UPDATE `likes` SET `liker_stat`=:val WHERE `liker_id` = :id AND `likee_id` = :usid ");
+            $stmt->bindValue(':val', $_POST['liked']);
+            $stmt->bindValue(':usid', $_POST['uid']);
+            $stmt->bindValue(':id', $_SESSION['id']);
+            $stmt->execute();
+        } else {
+            $con->query("USE matcha");
+            $stmt = $con->prepare("UPDATE `likes` SET `likee_stat`=:val WHERE `liker_id` = :id AND `likee_id` = :usid ");
+            $stmt->bindValue(':val', $_POST['liked']);
+            $stmt->bindValue(':usid', $_POST['uid']);
+            $stmt->bindValue(':id', $_SESSION['id']);
+            $stmt->execute();
+        }
         $con = null;
     } catch (PDOException $e) {
         print "Error : " . $e->getMessage() . "<br/>";

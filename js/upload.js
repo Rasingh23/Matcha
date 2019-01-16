@@ -55,13 +55,13 @@ function ajaxupload() {
     var hr = new XMLHttpRequest();
     var url = "upload.php";
     var formData = new FormData();
-    formData.append("userpic", pic);
-    /* var formData="pic=" +pic['name']+"&obj="+pic; */
+    formData.append("userpic", pic); 
     hr.open("POST", url, true);
-    // hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+ //hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     hr.onreadystatechange = function () {
         if (hr.readyState == 4 && hr.status == 200) {
             var return_data = hr.responseText;
+            alert(return_data);
             ajaxdisplay();
         }
     }

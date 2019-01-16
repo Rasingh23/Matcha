@@ -33,7 +33,7 @@ echo "<br><br> NEW EMAIL:".$email = $_GET["email"];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -50,7 +50,6 @@ for (var i = 0; i < parts.length; i++) {
     var temp = parts[i].split("=");
     $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 }
-alert($_GET['email']);
 const form = document.createElement('form');
 form.action = 'userdetails.php';
 form.method = 'get';

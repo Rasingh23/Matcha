@@ -27,12 +27,13 @@ session_start();
         <div id="users" style="float:left;border:1px solid;">
 </div>
 
-        <div class="chat_wrapper" id="chat_wrapper" style="float:right;margin-right:20%">
-            <div id="chat">ghghjgj</div>
+        <div class="chat_wrapper" id="chat_wrapper" style="float:right;margin-right:60%">
+        <div id="chat" style="border:solid 1px black"></div>
             <form method="POST" id="messageFrm">
-                <textarea name="message" cols="50" rows="20" class="textarea" id="textarea" placeholder="Please Type a message to send"></textarea>
+                <textarea name="message" cols="50" rows="2" class="textarea" id="textarea" placeholder="Please Type a message to send"></textarea>
             </form>
         </div>
+        
     </div>
 </body>
 </html>

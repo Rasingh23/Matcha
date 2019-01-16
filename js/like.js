@@ -1,5 +1,5 @@
 $('document').ready(function () {
-    console.log("hi");
+
     var btnlike = document.getElementById("like");
     btnlike.addEventListener("click", function () {
         var sumn = btnlike.getAttribute('data-this_shit');
@@ -19,7 +19,7 @@ $('document').ready(function () {
             liked = 0;
         }
 
-
+        console.log("hi");
         var hr = new XMLHttpRequest();
         var url = "conlike.php";
          hr.open("POST", url, true);
@@ -32,7 +32,6 @@ $('document').ready(function () {
         }
         user = document.getElementById("name").textContent;
         ret = "liked="+liked+"&user="+user+"&uid="+sumn+"&stat="+stat;
-        alert(user);
         hr.send(ret);
     });
 });

@@ -28,6 +28,10 @@ try{
             $_SESSION['loggedin'] = 1;
             $_SESSION['id'] = $info['userID'];
             $_SESSION['username'] = $info['User'];
+            $stmt = $con->prepare("UPDATE `users` SET `online` = '1' WHERE `User`=:user");
+            $stmt->bindParam(':user', $user);
+            $stmt->execute();
+            $con = null;
         }
         else
         { 

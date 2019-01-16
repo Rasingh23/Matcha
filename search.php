@@ -1,6 +1,5 @@
 <?php session_start();
 
-echo "hello";
 try {
     $con = new PDO("mysql:host=localhost", "root", "123456");
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -15,6 +14,22 @@ try {
     $GLOBALS['age'] = $new['age'];
     $GLOBALS['a'] = $new;
     $GLOBALS['u_id'] = $info['userID'];
+    $GLOBALS['online'] = $info['online'];
+    $con = null;
+} catch (PDOException $e) {
+
+    print "Error : " . $e->getMessage() . "<br/>";
+    die();
+}
+try {
+
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("USE matcha");
+    $stmt = $con->prepare("SELECT * FROM `likes` WHERE `likee_id` = :id AND `liker_stat` = 1 OR `liker_id` = :id AND `likee_stat` = 1");
+    $stmt->bindParam(':id', $GLOBALS['u_id']);
+    $stmt->execute();
+    $GLOBALS['rating'] = $stmt->rowCount();
     $con = null;
 } catch (PDOException $e) {
 
@@ -32,14 +47,20 @@ try {
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="jquery-3.3.1.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/like.js"></script>
 <!-- <script src="js/upload.js"></script> -->
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
-
+.dot {
+  height: 1%;
+  width: 3%;
+  background-color: green;
+  border-radius: 50%;
+  margin-left: 2%;
+}
 .search-container button {
     float: right;
     padding: 6px 10px;
@@ -87,7 +108,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 <div class="w3-top w3-animate-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+  <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
   <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
   <a href="chat.php"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
@@ -136,9 +157,16 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
          <h4 class="w3-center" id="name"><?php echo $_GET['user'] ?></h4>
          <p class="w3-center"><img src=<?php echo $GLOBALS['dp']; ?> class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <?php echo $GLOBALS['age'] ?> years old</p>
+         <?php if ($GLOBALS['online'] == '1') {
+    echo '<p><i class="fa dot fa-fw w3-margin-right w3-text-theme"></i> online</p>';
+} else {
+    echo '<p><i class="fa dot fa-fw w3-margin-right w3-text-theme" style="  background-color: red;"></i>Last seen: ' . $GLOBALS['online'] . '</p>';
+}
+
+?>
+         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>London, UK</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i><?php echo $GLOBALS['age'] ?> years old</p>
+         <p><i style="font-size:100%;color:gold;" class="fa fa-fw w3-margin-right ">&starf;</i><?php echo $GLOBALS['rating']?> </p>
         </div>
       </div>
       <br>

@@ -1,7 +1,11 @@
 
+$(document).ready(function () {
+suggested();
+});
 
 window.onload = function () {
 
+    //suggested();
     var searchBtn = document.getElementById("srchBtn");
     //var searchTxt = document.getElementById("srchBox");
     var res = document.getElementById("results");
@@ -11,8 +15,73 @@ window.onload = function () {
         fetchnames(searchTxt);
     }); */
 
+    if (document.getElementById("del"))
+    {
+    document.getElementById("del").addEventListener('click', function() {
+        deletepic();
+    });
+    }
+}
 
+function suggested()
+{
+    alert("in yr loop");
+    var xhr = new XMLHttpRequest();
+    var url = "functions/suggest.php";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            suggestion = JSON.parse(xhr.responseText)
+            console.log(suggestion[0]);
+            document.getElementById("suggest_name").textContent = suggestion[0]['User'];
+            document.getElementById("suggest_name").href = "localhost:8080/Matcha/search.php?user=" + suggestion[0]['User'];
+            info = JSON.parse(suggestion[0]['info'])
+            console.log(info['dp']);
+            document.getElementById("suggest_img").setAttribute('src', 'img/'+info['dp']);
+        }
+    };
+    xhr.send();
+}
 
+function deletepic()
+{
+    if (document.getElementById("img3").style.display == "block")
+    {
+        src = document.getElementById("img3").src;
+        document.getElementById("img3").setAttribute('src', null);
+        document.getElementById("img3").style.display = "none";
+    }
+    else if (document.getElementById("img2").style.display == "block")
+    {
+        src = document.getElementById("img2").src;
+        document.getElementById("img2").setAttribute('src', null);
+        document.getElementById("img2").style.display = "none";
+    }
+    else if (document.getElementById("img1").style.display == "block")
+    {
+        src = document.getElementById("img1").src;
+        document.getElementById("img1").setAttribute('src', null);
+        document.getElementById("img1").style.display = "none";
+    }
+    else
+    {
+        src = document.getElementById("img0").src;
+        document.getElementById("img0").setAttribute('src', null);
+        document.getElementById("img0").style.display = "none";
+    }
+    var hr = new XMLHttpRequest();
+    var url = "delete.php";
+    var formData = "src="+src;
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function () {
+        if (hr.readyState == 4 && hr.status == 200) {
+            var return_data = hr.responseText;
+         //   alert(return_data);
+        }
+    }
+    hr.send(formData);
 }
 
 function fetchnames(textsrch) {
