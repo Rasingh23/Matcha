@@ -36,6 +36,7 @@ $info['pref'] = $_POST['pref'];
 $info['gender'] = $_POST['gender'];
 $info['tags'] = $tags;
 $email = $_POST['email'];
+
 $json = json_encode($info);
 //var_dump($json);
 ///NEED TO FIGURE OUT HOW TO UPDATE JSON ARRAY

@@ -3,10 +3,13 @@
 
 window.onload = function () {
 
+/* if (authf == 1)
+{ */
     getLocation();
-  
-    console.log("bitches");
-    console.log(where_i_stay);
+/*     authf = 0;
+} */
+    //console.log("bitches");
+    //console.log(where_i_stay);
 } 
 function getLocation() {
 
@@ -19,15 +22,20 @@ function getLocation() {
         ipFetch();
     }
 }
+
+function pushLocation()
+{
+    $.post('functions/pushlocation.php?locate='+where_i_stay, function (response){});
+}
 function showPosition(position) {
     url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&key=AIzaSyA47t1t0JjL53u3KznXoMF_6oeVVjWTYaM";
     $.post(url, function (response) {
-        console.log("G API START");
-        console.log(response.results[4]["geometry"]["location"]["lat"] + " , " + response.results[4]["geometry"]["location"]["lng"]);
-        console.log("G API END");
-        console.log(response.results[4]['formatted_address'])
+      //  console.log("G API START");
+        //console.log(response.results[4]["geometry"]["location"]["lat"] + " , " + response.results[4]["geometry"]["location"]["lng"]);
+       // console.log("G API END");
+        //console.log(response.results[4]['formatted_address'])
         where_i_stay = response.results[4]['formatted_address'];
-        document.getElementById('locate').append(where_i_stay);
+       // document.getElementById('locate').append(where_i_stay);
     });
 
 }
@@ -63,8 +71,8 @@ function ipFetch() {
     $.post(url, function (response) {
         //var jsonified = response.slice(9,-1);
         //var test = JSON.parse(jsonified);
-        console.log("IPFETCh");
-        console.log(response['city']);
+       // console.log("IPFETCh");
+       // console.log(response['city']);
         where_i_stay = response['city']
         document.getElementById('locate').append(where_i_stay);
        // console.log(response['latitude']);
@@ -79,8 +87,8 @@ function ipFetch() {
           //////////googlemaps start
           url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+res['latitude']+","+res["longitude"]+"&key=AIzaSyA47t1t0JjL53u3KznXoMF_6oeVVjWTYaM";
           $.post(url, function (response2) {
-            console.log("gmaps");
-          console.log(response2.results[4]['formatted_address']);
+          //  console.log("gmaps");
+          //console.log(response2.results[4]['formatted_address']);
               where_i_stay = response2.results[4]['formatted_address'];
             // alert(where_i_stay)
 

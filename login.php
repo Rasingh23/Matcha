@@ -3,8 +3,8 @@
     session_start();
     //require_once('config/database.php');
     
-    $user = $_POST['usn'];
-    $pwd = $_POST['pwd'];
+    $user = $_REQUEST['usn'];
+    $pwd = $_REQUEST['pwd'];
 try{
 
     $con = new PDO("mysql:host=localhost", "root", "123456");
@@ -18,6 +18,8 @@ try{
     {
         if ($info["Active"] == 0)
         { 
+            echo 0;
+            exit();
             echo "<script type='text/javascript'>alert('Please activate your account');</script>";
              echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
@@ -31,16 +33,27 @@ try{
             $stmt = $con->prepare("UPDATE `users` SET `online` = '1' WHERE `User`=:user");
             $stmt->bindParam(':user', $user);
             $stmt->execute();
-            $con = null;
+            $con->query("USE matcha");
+            $stmt = $con->prepare("UPDATE users SET info = JSON_SET(info, '$.location', :lo ) WHERE `User` = :user");
+            $stmt->bindValue(':user', $_SESSION['username']);
+            $stmt->bindValue(':lo', $_REQUEST['locate']);
+            $stmt->execute();
+            $con=null;
+            echo ("1");
+            exit();
         }
         else
         { 
+            echo 2;
+            exit();
             echo "<script type='text/javascript'>alert('Incorrect Password');</script>";
              echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
         }
     }
     else{
+        echo 3;
+        exit();
             echo "<script type='text/javascript'>alert('User does not exist.');</script>";
              echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
@@ -53,4 +66,5 @@ catch (PDOException $e) {
     die();
 }
  echo "<meta http-equiv='refresh' content='0,url=home.php'>";
+
 ?>

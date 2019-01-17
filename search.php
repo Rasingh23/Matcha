@@ -16,6 +16,7 @@ try {
     $GLOBALS['u_id'] = $info['userID'];
     $GLOBALS['online'] = $info['online'];
     $con = null;
+    var_dump ($_GET);
 } catch (PDOException $e) {
 
     print "Error : " . $e->getMessage() . "<br/>";

@@ -10,12 +10,14 @@ session_start();
     <title>Welcome!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script src="main.js"></script>
+    <script src="js/locate.js"></script>
 </head>
 <body>
 <div class="navbar" style="color:white;float:right">
-<form action="login.php" method="post" style="float:right; margin:15px 50px">
-Username <input type="text" name="usn" placeholder="Enter Username" required>      Password </label><input type="password" placeholder="Enter Password" name="pwd" required>
+<form id="signin" method="post" style="float:right; margin:15px 50px">
+Username <input id="usn" type="text" name="usn" placeholder="Enter Username" required>      Password </label><input type="password" placeholder="Enter Password" id="pwd" name="pwd" required>
     <button type="submit" style="border:solid 1px;">Sign in</button>
     </form> 
 </div>
@@ -39,3 +41,18 @@ Username <input type="text" name="usn" placeholder="Enter Username" required>   
 </form>
 </body>
 </html>
+
+<script>
+    $('#signin').on('submit', function (e) {
+        e.preventDefault();
+        loginForm = $("#signin").serialize() + "&locate=" + where_i_stay;
+    console.log("login.php?"+loginForm);
+    $.post("login.php?"+loginForm, function (response){
+        console.log(response);
+        if (response == 1){
+           // window.location = "home.php";
+        }
+    });
+    });
+
+    </script>

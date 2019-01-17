@@ -1,5 +1,4 @@
 <?php session_start();
-/* var_dump($_SESSION); */
 try{
 
   $con = new PDO("mysql:host=localhost", "root", "123456");
@@ -14,6 +13,7 @@ try{
   $_SESSION['bio'] = $new['bio'];
   $_SESSION['age'] = $new['age'];
   $_SESSION['gender'] = $new['gender'];
+  $_SESSION['location'] = $new['location'];
   $GLOBALS['a'] = $new;
   $_SESSION['pref'] = $new['pref'];
   $con = null;
@@ -46,12 +46,13 @@ catch (PDOException $e) {
 <title>Home</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
@@ -68,46 +69,6 @@ catch (PDOException $e) {
   margin-left: 2%;
 }
 
-.search-container button {
-    float: right; 
-    padding: 6px 10px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #ddd;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-  }
-
-.search-container {
-  float: right;
-}
-  input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
- .search-container button:hover {
-    background: #ccc;
-  }
-  
-  @media screen and (max-width: 600px) {
-   .search-container {
-      float: none;
-    }
-    .input[type=text], .search-container button {
-      float: none;
-      display: block;
-      text-align: left;
-      width: 12%;
-      margin: 0;
-      padding: 14px;
-    }
-    input[type=text] {
-      border: 1px solid #ccc;  
-    }
-  }
 </style>
 
 <body class="w3-theme-l5">
@@ -177,7 +138,7 @@ catch (PDOException $e) {
                             style="height:106px;width:106px" alt="Avatar"></p>
                         <hr>
                         <p><i class="fa dot fa-fw w3-margin-right w3-text-theme"></i></span>online</p>
-                        <p id="locate"><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i></p>
+                        <p id="locate"><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i><?php echo $_SESSION['location']?></p>
                         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
                             <?php echo $_SESSION['age']?> years old</p>
                         <p><i style="font-size:100%;color:gold;" class="fa fa-fw w3-margin-right ">&starf;</i>
@@ -220,9 +181,9 @@ catch (PDOException $e) {
                     <div class="w3-container">
                         <p>Suggested</p>
                         <img id="suggest_img" src="" alt="Avatar" style="width:50%"><br>
-                        <a href="" id = "suggest_name">Jane Doe</a>
+                        <a onclick='redirect(this)' id = "suggest_name">Jane Doe</a>
                     </div>
-                    <a href=".php">see more profiles</a>
+                    <a href="explore.php">see more profiles</a>
                 </div>
 
                 <!-- End Left Column -->
@@ -324,6 +285,11 @@ catch (PDOException $e) {
 
 
     <script>
+function redirect(name)
+{
+    name = document.getElementById('suggest_name');
+    window.location.href = "search.php?user="+ name.textContent;
+}
         // Accordion
         function myFunction(id) {
             var x = document.getElementById(id);

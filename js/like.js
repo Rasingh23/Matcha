@@ -19,7 +19,6 @@ $('document').ready(function () {
             liked = 0;
         }
 
-        console.log("hi");
         var hr = new XMLHttpRequest();
         var url = "conlike.php";
          hr.open("POST", url, true);

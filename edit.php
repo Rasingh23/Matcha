@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +13,9 @@ session_start();
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-    <script src="js/editjs.js"></script>
-    <script src="js/myjs.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- <script src="js/editjs.js"></script> -->
+    <!-- <script src="js/myjs.js"></script> -->
 </head>
 <body>
 <div class="navbar">
@@ -76,6 +80,10 @@ session_start();
     <br><input type="submit" name = "email" value="Change Email">
     </fieldset>
     </form>
+    
+
+    <input id="locSearch" type='text' name="locSearch" placeholder="search Location"><br>
+
     <br>
     <?php
     $user = $_SESSION['username'];
@@ -104,3 +112,92 @@ session_start();
 </div>
 </body>
 </html>
+<script>
+$(document).ready(function () {
+
+    $("#locSearch").keyup(function (e) { 
+    e.preventDefault();
+    searchVal = e.target.value;
+    url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+searchVal+"&types=(cities)&language=en_ZA&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI";
+
+    $.post(url, function (response) {
+      
+       console.log(response.predictions);
+       var count = Object.keys(response.predictions).length;
+       console.log(count);
+
+/* var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ]; */
+    
+
+        var sug = [];
+        for(var t = 0;t < count;t++){
+      /*      console.log((response.predictions[t]['description'])); */
+           sug[t] = response.predictions[t]['description'];
+       } 
+  /*      console.log(sug[0]); */
+     /*   $( "#tags" ).autocomplete({
+      source: sug
+    }); */
+
+
+
+
+
+    });
+
+    
+
+
+
+
+  
+   // alert(searchVal);
+    
+
+
+   //  console.log(test(searchVal));
+
+    
+});
+
+
+});
+
+
+function test(thetext){
+    //alert(thetext);
+
+ url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=joh&types=(cities)&language=en_ZA&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI";
+
+return $.post(url, function (response) {
+      
+       //console.log(response);
+    });
+
+    } 
+
+
+    </script>
