@@ -1,4 +1,6 @@
 <?php session_start();
+
+require 'notify.php';
 echo $_POST['uid'] . "<br>";
 echo $_SESSION['id'] . "<br>";
 echo $_POST['stat'];
@@ -27,7 +29,15 @@ if ($_POST['stat'] == 'Like') {
             $stmt->bindValue(':id', $_SESSION['id']);
             $stmt->execute();
         }
+        $token = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+        $token = str_shuffle($token);
+        $token = substr($token, 0, 3);
+        $note = $_SESSION['username']." liked your profile.";
+        $con->query("USE matcha");
+        $stmt = $con->prepare("UPDATE `users` SET `notify` = JSON_SET(notify, '$.{$token}', '{$note}' ) WHERE `userID` = {$_POST['uid']}");
+        $stmt->execute();
         $con = null;
+
     } catch (PDOException $e) {
         print "Error : " . $e->getMessage() . "<br/>";
         die();
@@ -42,7 +52,7 @@ if ($_POST['stat'] == 'Like') {
         $stmt->bindValue(':usid', $_POST['uid']);
         $stmt->bindValue(':id', $_SESSION['id']);
         $stmt->execute();
-        var_dump( $stmt->fetch());
+        var_dump($stmt->fetch());
         if ($stmt->rowCount() > 0) {
             echo $_POST['liked'];
             $con->query("USE matcha");
@@ -59,6 +69,13 @@ if ($_POST['stat'] == 'Like') {
             $stmt->bindValue(':id', $_SESSION['id']);
             $stmt->execute();
         }
+        $token = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+        $token = str_shuffle($token);
+        $token = substr($token, 0, 3);
+        $note = $_SESSION['username']." liked your profile back.";
+        $con->query("USE matcha");
+        $stmt = $con->prepare("UPDATE `users` SET `notify` = JSON_SET(notify, '$.{$token}', '{$note}' ) WHERE `userID` = {$_POST['uid']}");
+        $stmt->execute();
         $con = null;
     } catch (PDOException $e) {
         print "Error : " . $e->getMessage() . "<br/>";
@@ -86,6 +103,13 @@ if ($_POST['stat'] == 'Like') {
             $stmt->bindValue(':id', $_SESSION['id']);
             $stmt->execute();
         }
+        $token = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+        $token = str_shuffle($token);
+        $token = substr($token, 0, 3);
+        $note = $_SESSION['username']." unliked your profile.";
+        $con->query("USE matcha");
+        $stmt = $con->prepare("UPDATE `users` SET `notify` = JSON_SET(notify, '$.{$token}', '{$note}' ) WHERE `userID` = {$_POST['uid']}");
+        $stmt->execute();
         $con = null;
     } catch (PDOException $e) {
         print "Error : " . $e->getMessage() . "<br/>";

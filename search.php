@@ -23,7 +23,6 @@ try {
     die();
 }
 try {
-
     $con = new PDO("mysql:host=localhost", "root", "123456");
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $con->query("USE matcha");
@@ -31,6 +30,29 @@ try {
     $stmt->bindParam(':id', $GLOBALS['u_id']);
     $stmt->execute();
     $GLOBALS['rating'] = $stmt->rowCount();
+    $con = null;
+} catch (PDOException $e) {
+
+    print "Error : " . $e->getMessage() . "<br/>";
+    die();
+}
+try {
+  $token = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+        $token = str_shuffle($token);
+        $token = substr($token, 0, 3);
+        $user = $_SESSION['username'];
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("USE matcha");
+    $stmt = $con->prepare("UPDATE `users` SET `views` = JSON_SET(views, '$.{$token}', '{$user}' ) WHERE `userID` = {$GLOBALS['u_id']}");
+    $stmt->execute();
+    $token = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+    $token = str_shuffle($token);
+    $token = substr($token, 0, 3);
+    $note = $_SESSION['username']." viewed your profile.";
+    $con->query("USE matcha");
+    $stmt = $con->prepare("UPDATE `users` SET `notify` = JSON_SET(notify, '$.{$token}', '{$note}' ) WHERE `userID` = {$GLOBALS['u_id']}");
+    $stmt->execute();
     $con = null;
 } catch (PDOException $e) {
 
@@ -110,7 +132,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
+  <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
   <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
   <a href="chat.php"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">

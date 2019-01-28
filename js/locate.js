@@ -6,15 +6,15 @@ window.onload = function () {
 /* if (authf == 1)
 { */
     getLocation();
+
 /*     authf = 0;
 } */
     //console.log("bitches");
     //console.log(where_i_stay);
 } 
 function getLocation() {
-
+  
     if (navigator.geolocation) {
-        // alert("it works");
          navigator.geolocation.getCurrentPosition(showPosition, showError);
     }
     else {
@@ -27,13 +27,13 @@ function pushLocation()
 {
     $.post('functions/pushlocation.php?locate='+where_i_stay, function (response){});
 }
-function showPosition(position) {
+function showPosition(position) {;
     url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&key=AIzaSyA47t1t0JjL53u3KznXoMF_6oeVVjWTYaM";
     $.post(url, function (response) {
-      //  console.log("G API START");
-        //console.log(response.results[4]["geometry"]["location"]["lat"] + " , " + response.results[4]["geometry"]["location"]["lng"]);
-       // console.log("G API END");
-        //console.log(response.results[4]['formatted_address'])
+       console.log("G API START");
+        console.log(response.results[4]["geometry"]["location"]["lat"] + " , " + response.results[4]["geometry"]["location"]["lng"]);
+        console.log("G API END");
+       console.log(response.results[4]['formatted_address'])
         where_i_stay = response.results[4]['formatted_address'];
        // document.getElementById('locate').append(where_i_stay);
     });

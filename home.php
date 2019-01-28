@@ -9,6 +9,8 @@ try{
   $stmt->execute();
   $info = $stmt->fetch(PDO::FETCH_ASSOC);
   $new = json_decode($info['info'], true) ;
+  $notify = json_decode($info['notify'], true);
+  $count = count($notify);
   $_SESSION['dp'] = "img/".$new['dp']; 
   $_SESSION['bio'] = $new['bio'];
   $_SESSION['age'] = $new['age'];
@@ -51,13 +53,14 @@ catch (PDOException $e) {
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/upload.js"></script>
 <script src="js/locate.js"></script>
+<script src="js/notify.js"></script>
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
@@ -77,18 +80,28 @@ catch (PDOException $e) {
         <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
             <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                 href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-            <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
-                title="News"><i class="fa fa-globe"></i></a>
+            <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+            <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
+                title="Stats"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></a>
             <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Account Settings"><i class="fa fa-user"></i></a>
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Messages"><i class="fa fa-envelope"></i></a>
             <div class="w3-dropdown-hover w3-hide-small">
                 <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
-                        class="w3-badge w3-right w3-small w3-green">1</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                        class="w3-badge w3-right w3-small w3-green"><?php echo $count;?></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
+                <?php
+                foreach ($notify as $names)
+                {
+                    echo '<a href="#" class="w3-bar-item w3-button">'.$names.'</a>';
+                }
+                if ($count > 0)
+                {
+                    echo '<a href="#" class="w3-bar-item w3-button" id="clear" >clear</a>';
+                }
+                ?>
+                    
                 </div>
             </div>
             <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"

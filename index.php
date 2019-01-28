@@ -1,6 +1,10 @@
 <?php
 session_start();
-
+if (isset($_SESSION['id']))
+{
+    header('location: home.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,11 +50,10 @@ Username <input id="usn" type="text" name="usn" placeholder="Enter Username" req
     $('#signin').on('submit', function (e) {
         e.preventDefault();
         loginForm = $("#signin").serialize() + "&locate=" + where_i_stay;
-    console.log("login.php?"+loginForm);
     $.post("login.php?"+loginForm, function (response){
-        console.log(response);
+        //console.log(response);
         if (response == 1){
-           // window.location = "home.php";
+            window.location = "home.php";
         }
     });
     });

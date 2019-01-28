@@ -1,7 +1,6 @@
 <?php
 session_start();
 /* phpinfo(); */
-
 ?>
 
 <!DOCTYPE html>
@@ -12,10 +11,10 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+   <!--  <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" /> -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/w3.css" />
-    <script src="main.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="main.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <style>

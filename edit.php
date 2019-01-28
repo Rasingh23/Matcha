@@ -13,32 +13,68 @@ session_start();
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-    <script src="js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="css/search.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
     <!-- <script src="js/editjs.js"></script> -->
     <!-- <script src="js/myjs.js"></script> -->
 </head>
 <body>
-<div class="navbar">
-    <?php
-    if(isset($_SESSION['loggedin']))
-    {
-        echo " <span id='open' onclick='openNav()'>&#9776; </span>";
-        echo "<button id='logout' onclick='logout()' class='loginbtn'>Logout</button>";
-    }
-    else
-    {
-        echo "<a href=signup.php ><button class='registerbtn'>Register</button></a>";
-        echo "<button  onclick='showmodal()' class='loginbtn'>Login</button>";
-    }
-    ?>
-</div>
+  <!-- Navbar -->
+  <div class="w3-top w3-animate-top">
+        <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+            <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+            <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
+                title="Stats"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></a>
+            <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
+                title="Account Settings"><i class="fa fa-user"></i></a>
+            <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
+                title="Messages"><i class="fa fa-envelope"></i></a>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
+                        class="w3-badge w3-right w3-small w3-green">1</span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                </div>
+            </div>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"
+                title="My Account">
+                <img onmouseover="switchani(this)" src="img/bg.jpg" class="w3-circle w3-spin" style="height:23px;width:23px"
+                    alt="Avatar">
 
-<div id="mySidenav" class="sidenav" onload="shownav()"> 
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="index.php">Home</a>
-    <a href="profile.php">My Profile</a> 
-    <a href="upload.php">Upload</a>   
-</div>
+                <script>
+                    function switchani(item){
+        item.className = "w3-circle w3-spin";
+      }
+      </script>
+            </a>
+            <a href="exit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
+                title="News"><i class="glyphicon glyphicon-log-out"></i></a>
+            <div class="search-container">
+                <form action="/action_page.php">
+                    <input id="srchBox" type="text" placeholder="Search.." name="search" onkeyup='fetchnames(this.value)'>
+                    <button id="srchBtn" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navbar on small screens -->
+    <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+        <a href="chat.php" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+        <a href="edit.php" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+    </div>
 <br>
 <form method = "POST" action = "conedit.php">
     <fieldset>

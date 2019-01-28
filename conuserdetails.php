@@ -35,6 +35,8 @@ $info['bio'] = $_POST['bio'];
 $info['pref'] = $_POST['pref'];
 $info['gender'] = $_POST['gender'];
 $info['tags'] = $tags;
+$info['rating'] = 0;
+$info['location'] = '';
 $email = $_POST['email'];
 
 $json = json_encode($info);

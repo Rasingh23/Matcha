@@ -18,31 +18,29 @@ $(document).ready(function () {
 	}, 10000);  */
 	$('#textarea').keyup(function (e) {
 		if (e.which == 13) {
-			alert("submitted");
-			$('form').submit();
+			$('#messageFrm').submit();
 		}
 	});
 
-
-	$('form').submit(function () {
+	$('#messageFrm').submit(function () {
 		var chat = escape($('#chat').html());
 		var message = $('#textarea').val();
-	    $.post('functions/messages.php?action=sendMessage&message=' + message +'&chat='+chat +'&user='+user , function (response) {
+		$.post('functions/messages.php?action=sendMessage&message=' + message +'&chat='+chat +'&user='+user , function (response) {
 			console.log(response);
-			//alert(response);
-		/* 	if (response == 1) { */
+			alert("New: "+response);
+			 if (response == 1) { 
+				alert("IN DIS BITCH");
+				document.getElementById('messageFrm').reset();
 				LoadChat(user);
-				$('#messageFrm')[0].reset();
-		//	}
-		}).fail( function(xhr, textStatus, errorThrown) {
-			alert("some randome ass text " + xhr.responseText + '  fukk:'+ textStatus); 
+			}
 		});
 		return false;
 	});
+
 });
 
 /* 	$(".uname").on("click", function(){
-		alert(this);
+	alert(this);
 		showPart(this);
 	}) */
 
@@ -65,14 +63,13 @@ $(document).ready(function () {
 
 
 	function LoadChat(user) {
+		alert("fuuuuuuuuukkkkkkkkk");
 		$.post('functions/messages.php?action=getMessages&user='+user, function (response) {
-			console.log("test:  " +response);
 			themessages = JSON.parse(response);
 			themessages = JSON.parse(themessages["chat"]);
 			//console.log(JSON.parse(themessages["chat"]));
 			//console.log(themessages["chat"]);
 			const length = Object.getOwnPropertyNames(themessages);
-		/* 	alert(length.length); */
 			$('#chat').html('');
 			for(var t = 0; t < length.length - 1; t++){
 				//alert("heriheriogherg");
@@ -83,9 +80,7 @@ $(document).ready(function () {
 			var scrollHeight = $('#chat').prop('scrollHeight');
 		//	console.log(JSON.parse(response));
 			//$('#chat').html(response);
-			if (scrollpos < scrollHeight) {
-
-			} else {
+			if (scrollpos > scrollHeight) {
 				$('#chat').scrollTop($('#chat').prop('scrollHeight'));
 			}
 		});

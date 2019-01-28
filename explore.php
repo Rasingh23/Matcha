@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
@@ -27,9 +27,9 @@
         <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
             <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                 href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-            <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
-                title="News"><i class="fa fa-globe"></i></a>
+            <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+            <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
+                title="Stats"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></a>
             <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Account Settings"><i class="fa fa-user"></i></a>
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
@@ -72,9 +72,34 @@
         <a href="edit.php" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
     </div>
     <br>
-    <button id="button" onclick="duplicate()">Click me</button>
-    <div id= "main">
+
+    <div id="main">
+        <div class="w3-content" style="max-width: 50%; padding: 20px">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Sort
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="0" href="#">Location</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="1" href="#">Tags</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="2" href="#">Fame</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" id="menu2" type="button" data-toggle="dropdown">Filter
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="0" href="#">Location</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="1" href="#">Age</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="2" href="#">Tags</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="3" href="#">Fame</a></li>
+                </ul>
+            </div>
+        </div>
+
+
     </div>
+
+
 </body>
 
 </html>
