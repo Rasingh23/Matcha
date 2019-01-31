@@ -23,6 +23,7 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
     <script src="js/chat.js"></script>
+    <script src="js/notify.js"></script>
 
 </head>
 
@@ -39,11 +40,10 @@ session_start();
                 title="Account Settings"><i class="fa fa-user"></i></a>
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Messages"><i class="fa fa-envelope"></i></a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
-                        class="w3-badge w3-right w3-small w3-green">1</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
                 </div>
             </div>
             <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"

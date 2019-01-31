@@ -1,10 +1,4 @@
-/* 
- $('div').on("click", function(){
-	alert("boi");
-	this.off();
-	stop();
 
-   });  */
 
 $(document).ready(function () {
 	/* LoadChat(); */
@@ -27,9 +21,7 @@ $(document).ready(function () {
 		var message = $('#textarea').val();
 		$.post('functions/messages.php?action=sendMessage&message=' + message +'&chat='+chat +'&user='+user , function (response) {
 			console.log(response);
-			alert("New: "+response);
 			 if (response == 1) { 
-				alert("IN DIS BITCH");
 				document.getElementById('messageFrm').reset();
 				LoadChat(user);
 			}
@@ -38,18 +30,6 @@ $(document).ready(function () {
 	});
 
 });
-
-/* 	$(".uname").on("click", function(){
-	alert(this);
-		showPart(this);
-	}) */
-
-/* 	$('#users').on("click", function(){
-		//alert("boi");
-		//this.off();
-		stop();
-	
-	   });  */
 
 
 	user = 0;
@@ -63,7 +43,6 @@ $(document).ready(function () {
 
 
 	function LoadChat(user) {
-		alert("fuuuuuuuuukkkkkkkkk");
 		$.post('functions/messages.php?action=getMessages&user='+user, function (response) {
 			themessages = JSON.parse(response);
 			themessages = JSON.parse(themessages["chat"]);
@@ -72,7 +51,6 @@ $(document).ready(function () {
 			const length = Object.getOwnPropertyNames(themessages);
 			$('#chat').html('');
 			for(var t = 0; t < length.length - 1; t++){
-				//alert("heriheriogherg");
 				$('#chat').append(themessages[t] + '<br>');
 			}
 			var scrollpos = $('#chat').scrollTop();

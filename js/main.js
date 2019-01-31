@@ -10,11 +10,7 @@ window.onload = function () {
     var searchBtn = document.getElementById("srchBtn");
     //var searchTxt = document.getElementById("srchBox");
     var res = document.getElementById("results");
-    /* searchTxt.addEventListener('onkeyup', function(){
-        alert(searchTxt);
-        res.innerHTML += searchTxt;
-        fetchnames(searchTxt);
-    }); */
+
 
     if (document.getElementById("del"))
     {
@@ -29,13 +25,12 @@ window.onload = function () {
 function suggested()
 {
     var xhr = new XMLHttpRequest();
-    var url = "functions/suggest.php";
+    var url = "functions/suggest.php?action=all";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200 && document.getElementById("suggest_name")) {
             suggestion = JSON.parse(xhr.responseText)
-          //  console.log(suggestion[0]);
             document.getElementById("suggest_name").textContent = suggestion[0]['User'];
             //document.getElementById("suggest_name").href = "search.php?user=" + suggestion[0]['User'];
             info = JSON.parse(suggestion[0]['info'])
@@ -80,7 +75,7 @@ function deletepic()
     hr.onreadystatechange = function () {
         if (hr.readyState == 4 && hr.status == 200) {
             var return_data = hr.responseText;
-         //   alert(return_data);
+  
         }
     }
     hr.send(formData);

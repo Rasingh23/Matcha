@@ -102,7 +102,7 @@ try{
     function activeEmail($token, $mail) {
     $message = ' 
     Click on link below to activate account:
-    http://localhost:8080/new/Camagru/active.php?token='.$token.'&email='.$mail;
+    http://localhost:8080/matcha/active.php?token='.$token.'&email='.$mail;
     $message = wordwrap($message, 100, "\r\n");
     mail( $_POST['email'] , 'Activation link' , $message);
     echo '<script>alert("Pls check email.")</script>';

@@ -27,9 +27,10 @@ function pushLocation()
 {
     $.post('functions/pushlocation.php?locate='+where_i_stay, function (response){});
 }
-function showPosition(position) {;
-    url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&key=AIzaSyA47t1t0JjL53u3KznXoMF_6oeVVjWTYaM";
+function showPosition(position) {
+    url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI ";
     $.post(url, function (response) {
+        console.log(response.results);
        console.log("G API START");
         console.log(response.results[4]["geometry"]["location"]["lat"] + " , " + response.results[4]["geometry"]["location"]["lng"]);
         console.log("G API END");
@@ -85,7 +86,7 @@ function ipFetch() {
   function gMapSrch(res){
 
           //////////googlemaps start
-          url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+res['latitude']+","+res["longitude"]+"&key=AIzaSyA47t1t0JjL53u3KznXoMF_6oeVVjWTYaM";
+          url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+res['latitude']+","+res["longitude"]+"&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI ";
           $.post(url, function (response2) {
           //  console.log("gmaps");
           //console.log(response2.results[4]['formatted_address']);

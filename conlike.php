@@ -1,6 +1,6 @@
 <?php session_start();
 
-require 'notify.php';
+/* require 'notify.php'; */
 echo $_POST['uid'] . "<br>";
 echo $_SESSION['id'] . "<br>";
 echo $_POST['stat'];

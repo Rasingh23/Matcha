@@ -9,8 +9,8 @@ try{
   $stmt->execute();
   $info = $stmt->fetch(PDO::FETCH_ASSOC);
   $new = json_decode($info['info'], true) ;
-  $notify = json_decode($info['notify'], true);
-  $count = count($notify);
+ /*  $notify = json_decode($info['notify'], true); */
+/*   $count = count($notify); */
   $_SESSION['dp'] = "img/".$new['dp']; 
   $_SESSION['bio'] = $new['bio'];
   $_SESSION['age'] = $new['age'];
@@ -88,20 +88,9 @@ catch (PDOException $e) {
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Messages"><i class="fa fa-envelope"></i></a>
             <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
-                        class="w3-badge w3-right w3-small w3-green"><?php echo $count;?></span></button>
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
                 <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
-                <?php
-                foreach ($notify as $names)
-                {
-                    echo '<a href="#" class="w3-bar-item w3-button">'.$names.'</a>';
-                }
-                if ($count > 0)
-                {
-                    echo '<a href="#" class="w3-bar-item w3-button" id="clear" >clear</a>';
-                }
-                ?>
-                    
                 </div>
             </div>
             <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"

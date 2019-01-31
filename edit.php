@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +16,13 @@ session_start();
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/notify.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <!-- <script src="js/editjs.js"></script> -->
     <!-- <script src="js/myjs.js"></script> -->
 </head>
@@ -38,11 +39,10 @@ session_start();
                 title="Account Settings"><i class="fa fa-user"></i></a>
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Messages"><i class="fa fa-envelope"></i></a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
-                        class="w3-badge w3-right w3-small w3-green">1</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
                 </div>
             </div>
             <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"
@@ -116,124 +116,81 @@ session_start();
     <br><input type="submit" name = "email" value="Change Email">
     </fieldset>
     </form>
-    
+
 
     <input id="locSearch" type='text' name="locSearch" placeholder="search Location"><br>
-
+    <select id="loc" class="loc" name="opt[]" multiple style="width: 50%">
+                </select>
+    <button id="locupd">Update Location</button>
     <br>
     <?php
-    $user = $_SESSION['username'];
-     try{
-        $con = new PDO("mysql:host=localhost", "root", "123456");
-        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $con->query("USE matcha");
-        $stmt = $con->prepare("SELECT * FROM `users` WHERE `User` = :username");
-        $stmt->bindValue(':username', $user);
-        $stmt->execute();
-        $res = $stmt->fetch();
-        $con = null;
-    }
-    catch (PDOException $e) {
-        print "Error : ".$e->getMessage()."<br/>";
-        die();
-    }
-    echo "
+$user = $_SESSION['username'];
+try {
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("USE matcha");
+    $stmt = $con->prepare("SELECT * FROM `users` WHERE `User` = :username");
+    $stmt->bindValue(':username', $user);
+    $stmt->execute();
+    $res = $stmt->fetch();
+    $con = null;
+} catch (PDOException $e) {
+    print "Error : " . $e->getMessage() . "<br/>";
+    die();
+}
+echo "
         <input onclick='testfunc()' type='checkbox' id='chbx'  name='chbx'>
         <label for='chbx'>Receive notifications<label>
         ";
 
-    ?>
+?>
 <div class="footer">
   <p>Footer</p>
 </div>
 </body>
 </html>
 <script>
+     /*      $(document).ready(function() {
+        $('select').select2({
+            placeholder: "enter location"
+        }); */
+$("#locupd").click(function (e) { 
+    e.preventDefault();
+   // alert($("select").val());
+    $.post("functions/funcs.php?location="+$("select").val(), function (response){
+        //console.log(response);
+        if (response == 1){
+            alert("Location updated");
+            
+        }
+    });
+});
+
 $(document).ready(function () {
 
-    $("#locSearch").keyup(function (e) { 
+    $("#locSearch").keyup(function (e) {
+        $("select").html('');
     e.preventDefault();
     searchVal = e.target.value;
     url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+searchVal+"&types=(cities)&language=en_ZA&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI";
 
     $.post(url, function (response) {
-      
-       console.log(response.predictions);
-       var count = Object.keys(response.predictions).length;
-       console.log(count);
-
-/* var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ]; */
-    
-
-        var sug = [];
-        for(var t = 0;t < count;t++){
-      /*      console.log((response.predictions[t]['description'])); */
-           sug[t] = response.predictions[t]['description'];
-       } 
-  /*      console.log(sug[0]); */
-     /*   $( "#tags" ).autocomplete({
-      source: sug
-    }); */
-
-
-
+        console.log(response.predictions);
+        var count = Object.keys(response.predictions).length;
+        for (let index = 0; index < count; index++) {
+            console.log(response.predictions[index]['description']);
+            var opt = document.createElement('option');
+            opt.value = response.predictions[index]['description'];
+            opt.innerHTML = response.predictions[index]['description'] ;
+           // select.appendChild(opt);
+            $("select").append(opt);
+       }
 
 
     });
 
-    
-
-
-
-
-  
-   // alert(searchVal);
-    
-
-
-   //  console.log(test(searchVal));
-
-    
-});
-
-
-});
-
-
-function test(thetext){
-    //alert(thetext);
-
- url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=joh&types=(cities)&language=en_ZA&key=AIzaSyDwMhLbkQbBk7091NEYpSx9T_ykXnwgPuI";
-
-return $.post(url, function (response) {
-      
-       //console.log(response);
     });
 
-    } 
-
+});
 
     </script>

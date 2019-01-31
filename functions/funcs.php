@@ -1,7 +1,20 @@
 <?php
+session_start();
 
 if(isset($_POST['fetchnames'])){
     getNames();
+}
+if(isset($_REQUEST['location'])){
+    $con = new PDO("mysql:host=localhost", "root", "123456");
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->query("USE matcha");
+    $stmt = $con->prepare("UPDATE users SET info = JSON_SET(info, '$.location', :lo ) WHERE `User` = :user");
+    $stmt->bindValue(':user', $_SESSION['username']);
+    $stmt->bindValue(':lo', $_REQUEST['location']);
+    $stmt->execute();
+    $con=null;
+    $_SESSION['location'] = $_REQUEST['location'];
+    echo 1;
 }
 
 function getNames(){

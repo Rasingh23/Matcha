@@ -50,6 +50,7 @@ $user = $_SESSION['id'];
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/notify.js"></script>
 </head>
 
 <body>
@@ -71,9 +72,9 @@ $user = $_SESSION['id'];
                 title="Messages"><i class="fa fa-envelope"></i></a>
             <div class="w3-dropdown-hover w3-hide-small">
                 <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i
-                        class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">1</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                        class="fa fa-bell"></i><span id="notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
                 </div>
             </div>
             <a href="#"
@@ -118,14 +119,14 @@ $user = $_SESSION['id'];
                     <button onclick="myFunction('views')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i
                             class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Views</button>
                     <div id="views" class="w3-hide w3-container">
-            <?php         foreach ($res as $name) {
+                        <?php         foreach ($res as $name) {
             echo $name.' viewed your profile.<br>';
         } ?>
                     </div>
                     <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i
                             class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Likes</button>
                     <div id="Demo2" class="w3-hide w3-container">
-                    <?php         foreach ($likes as $name) {
+                        <?php         foreach ($likes as $name) {
             echo $name[0].' liked your profile.<br>';
         } ?>
                     </div>

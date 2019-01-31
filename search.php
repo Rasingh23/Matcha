@@ -73,6 +73,7 @@ try {
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/like.js"></script>
+<script src="js/notify.js"></script>
 <!-- <script src="js/upload.js"></script> -->
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
@@ -136,11 +137,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
   <a href="chat.php"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">1</span></button>
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-    </div>
-  </div>
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
+                </div>
+            </div>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom" title="My Account">
     <img onmouseover="switchani(this)" src="img/bg.jpg" class="w3-circle w3-spin" style="height:23px;width:23px" alt="Avatar">
 
@@ -150,6 +151,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       }
       </script>
   </a>
+  <a href="exit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
+                title="News"><i class="glyphicon glyphicon-log-out"></i></a>
   <div class="search-container">
     <form action="/action_page.php">
       <input id="srchBox" type="text" placeholder="Search.." name="search" onkeyup='fetchnames(this.value)'>
@@ -187,7 +190,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 }
 
 ?>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>London, UK</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i><?php echo $info['location'] ?> </p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i><?php echo $GLOBALS['age'] ?> years old</p>
          <p><i style="font-size:100%;color:gold;" class="fa fa-fw w3-margin-right ">&starf;</i><?php echo $GLOBALS['rating']?> </p>
         </div>

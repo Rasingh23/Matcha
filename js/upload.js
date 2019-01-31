@@ -5,7 +5,7 @@ function newimg() {
     imageupload.addEventListener('change', function () {
         if (imageupload.files && imageupload.files[0]) {
             /*  var reader = new FileReader(); */
-            // alert("Image exists");
+
             /*         reader.onload = function (e) {
                         document.getElementById('newimg').setAttribute('src', e.target.result);
                     };
@@ -61,7 +61,7 @@ function ajaxupload() {
     hr.onreadystatechange = function () {
         if (hr.readyState == 4 && hr.status == 200) {
             var return_data = hr.responseText;
-            alert(return_data);
+    
             ajaxdisplay();
         }
     }
@@ -80,7 +80,7 @@ function ajaxupload() {
       hr.onreadystatechange = function() {
           if(hr.readyState == 4 && hr.status == 200) {
               var return_data = hr.responseText;
-             alert(return_data);
+
           }
       }
       hr.send(formData); 

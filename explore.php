@@ -10,7 +10,7 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/explore.js"></script>
+
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
@@ -19,7 +19,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="js/notify.js"></script>
+    <script src="js/explore.js"></script>
 </head>
 
 <body>
@@ -34,11 +35,10 @@
                 title="Account Settings"><i class="fa fa-user"></i></a>
             <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
                 title="Messages"><i class="fa fa-envelope"></i></a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span
-                        class="w3-badge w3-right w3-small w3-green">1</span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-                    <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+                <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
+                        class="w3-badge w3-right w3-small w3-green"></span></button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
                 </div>
             </div>
             <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"
@@ -72,22 +72,21 @@
         <a href="edit.php" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
     </div>
     <br>
-
-    <div id="main">
-        <div class="w3-content" style="max-width: 50%; padding: 20px">
+    <div >
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Sort
+                <button class="btn btn-primary dropdown-toggle" id="sort" type="button" data-toggle="dropdown">Sort
                     <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li role="presentation"><a role="menuitem" tabindex="0" href="#">Location</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="1" href="#">Tags</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="2" href="#">Fame</a></li>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sort">
+                <li role="presentation"><a role="menuitem" tabindex="3" onclick="select(this)">Age</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="0" onclick="select(this)">Location</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="1" onclick="select(this)">Tags</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="2" onclick="select(this)" >Fame</a></li>
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="menu2" type="button" data-toggle="dropdown">Filter
+                <button class="btn btn-primary dropdown-toggle" id="filter" type="button" data-toggle="dropdown">Filter
                     <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
                     <li role="presentation"><a role="menuitem" tabindex="0" href="#">Location</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="1" href="#">Age</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="2" href="#">Tags</a></li>
@@ -95,8 +94,7 @@
                 </ul>
             </div>
         </div>
-
-
+    <div id="main">
     </div>
 
 
@@ -115,4 +113,5 @@ function duplicate() {
     original.parentNode.appendChild(clone);
     document.createElement('br');
 }
+
 </script>
