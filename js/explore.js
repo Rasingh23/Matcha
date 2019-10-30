@@ -29,7 +29,7 @@ function suggested(val) {
 }
 
 function select(val) {
-    console.log(val.innerHTML);
+    // console.log(val.innerHTML);
     suggested(val.innerHTML);
 }
 function redirect(name) {
