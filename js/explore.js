@@ -17,8 +17,8 @@ function suggested(val) {
     $.post('functions/suggest.php?action=' + val, function (response) {
         suggestion = JSON.parse(response)
         console.log(suggestion);
-        
-        document.getElementById("main").innerHTML = ''; 
+
+        document.getElementById("main").innerHTML = '';
         /*  document.getElementById("suggest_img").setAttribute('src', 'img/'+info.dp); */
         for (let i = 0; i < suggestion.length; i++) {
             info = JSON.parse(suggestion[i]['info']);

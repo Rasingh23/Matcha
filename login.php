@@ -20,7 +20,7 @@ try{
         { 
             echo 0;
             exit();
-            echo "<script type='text/javascript'>alert('Please activate your account');</script>";
+            echo "<script type='text/javascript'>('Please activate your account');</script>";
              echo "<meta http-equiv='refresh' content='0,url=index.php'>";
             exit();
         }

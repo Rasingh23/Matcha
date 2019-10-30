@@ -73,6 +73,7 @@ try {
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/like.js"></script>
+<script src="js/block.js"></script>
 <script src="js/notify.js"></script>
 <!-- <script src="js/upload.js"></script> -->
 <style>
@@ -132,7 +133,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 <div class="w3-top w3-animate-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+  <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left" title="News"><i class="fa fa-globe"></i></a>
   <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Account Settings"><i class="fa fa-user"></i></a>
   <a href="chat.php"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right" title="Messages"><i class="fa fa-envelope"></i></a>
@@ -225,6 +226,10 @@ foreach ($GLOBALS['a']['tags'] as $nu) {
   </div>
 
       <!-- Suggested -->
+      <button class="w3-btn w3-red" style="text-shadow:1px 1px 0 #444" id="Report"> <a href="report.php"><b>Report</b> </a></button>
+      <button class="w3-btn w3-black" style="text-shadow:1px 1px 0 #444" id="block" onclick="block()"><b>Block</b></button>
+      <br>
+      <br>
 <?php
 
 try {
@@ -244,11 +249,11 @@ try {
     }
     $res = $stmt->fetch();
     if (($res['likee_stat'] == 1 && $res['likee_id'] == $_SESSION['id']) || ($res['liker_stat'] == 1 && $res['liker_id'] == $_SESSION['id'])) {
-        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>unlike</b></button>';
+        echo '<button class="w3-btn w3-blue" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>unlike</b></button>';
     } else if (($res['liker_stat'] == 1 && $res['likee_stat'] == 0 && $res['likee_id']) || ($res['liker_stat'] == 0 && $res['likee_stat'] == 1 && $res['liker_id'])) {
-        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like back</b></button>';
+        echo '<button class="w3-btn w3-blue" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like back</b></button>';
     } else {
-        echo '<button class="w3-btn w3-red" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like</b></button>';
+        echo '<button class="w3-btn w3-blue" data-this_shit=' . $GLOBALS['u_id'] . ' style="text-shadow:1px 1px 0 #444" id="like"><b>Like</b></button>';
     }
 
     $con = null;
@@ -258,7 +263,6 @@ try {
 }
 
 ?>
-
 
     <!-- End Left Column -->
     </div>
@@ -379,6 +383,10 @@ function onClick(element) {
     $('document').ready(function (){
          ajaxdisplay();
     });
+
+//     function block() {
+//     alert("User has been blocked by function");
+// }
 </script>
 
 </body>

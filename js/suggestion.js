@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 function suggested()
 {
-    alert("in yr loop");
+    // alert("in yr loop");
     var xhr = new XMLHttpRequest();
     var url = "functions/suggest.php";
     xhr.open("POST", url, true);

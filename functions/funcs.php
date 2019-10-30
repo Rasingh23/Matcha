@@ -22,8 +22,7 @@ function getNames(){
     $test = trim($_POST['fetchnames']);
     if ($test == "" OR empty($test) OR $test == NULL)
     {
-        echo ("FUCK THUT");
-  
+        // echo ("FUCK THUT");
     }
    // exit();
     $srchtxt = $_POST['fetchnames']."%";
