@@ -87,10 +87,10 @@
                 <button class="btn btn-primary dropdown-toggle" id="filter" type="button" data-toggle="dropdown">Filter
                     <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
-                    <li role="presentation"><a role="menuitem" tabindex="0" href="#">Location (10km radius)</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="1" href="#">Age (20-25)</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="2" href="#">Tags</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="3" href="#">Fame</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="0" onclick="select(this)">Location (10km radius)</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="1" onclick="select(this)">Age(20-25)</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="2" onclick="select(this)">Tags</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="3" onclick="select(this)">Fame</a></li>
                 </ul>
             </div>
         </div>

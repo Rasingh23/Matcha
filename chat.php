@@ -78,7 +78,7 @@ session_start();
     </div>
     <div id="wrapper">
         <center>
-            <h1>Welcome to my website</h1>
+            <h1>Chat</h1>
         </center>
         <div id="users" style="float:left;border:1px solid;">
 </div>
