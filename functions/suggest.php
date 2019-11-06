@@ -122,6 +122,25 @@ switch ($_REQUEST['action']) {
         die();
     }
         break;
+
+        case 'blocked':
+        try {
+            $con = new PDO("mysql:host=localhost", "root", "123456");
+            $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $con->query("Use matcha");
+            $stmt = $con->prepare("SELECT blocklist FROM users WHERE userID = :id");
+            $stmt->bindParam(':id', $_SESSION['id']);
+            $stmt->execute();
+            $info = $stmt->fetch(PDO::FETCH_ASSOC);
+            echo json_encode ($info);
+            return;
+            $con = null;
+        } catch (PDOException $e) {
+            print "Error : " . $e->getMessage() . "<br/>";
+            die();
+        }
+        break;
+        
         case 'Fame':
     try {
         if ($_SESSION['pref'] == 'straight') {

@@ -38,7 +38,7 @@ function ajaxdisplay() {
 
 
 $('document').ready(function () {
-    console.log("hi");
+    // console.log("hi");
     ajaxdisplay();
 });
 

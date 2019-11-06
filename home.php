@@ -287,11 +287,11 @@ catch (PDOException $e) {
 
 
     <script>
-function redirect(name)
-{
-    name = document.getElementById('suggest_name');
-    window.location.href = "search.php?user="+ name.textContent;
-}
+        function redirect(name)
+        {
+            name = document.getElementById('suggest_name');
+            window.location.href = "search.php?user="+ name.textContent;
+        }
         // Accordion
         function myFunction(id) {
             var x = document.getElementById(id);

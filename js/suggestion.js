@@ -12,11 +12,11 @@ function suggested()
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             suggestion = JSON.parse(xhr.responseText)
-            console.log(suggestion[0]);
+            // console.log(suggestion[0]);
             document.getElementById("suggest_name").textContent = suggestion[0]['User'];
             document.getElementById("suggest_name").href = "localhost:8080/Matcha/search.php?user=" + suggestion[0]['User'];
             info = JSON.parse(suggestion[0]['info'])
-            console.log(info['dp']);
+            alert(info);
             document.getElementById("suggest_img").setAttribute('src', 'img/'+info['dp']);
         }
     };

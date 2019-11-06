@@ -22,8 +22,25 @@ window.onload = function () {
 
 
 
-function suggested()
-{
+function suggested() {
+    var blocklist = [];
+    $.ajax({
+        url: 'functions/suggest.php?action=blocked',
+        async: false,
+        cache: false,
+        dataType: "html",
+        success: function (list) {
+​
+            suggestion = JSON.parse(list);
+            var blocked = JSON.parse(suggestion["blocklist"]);
+            var keys = Object.keys(blocked);
+            for (let index = 0; index < keys.length; index++) {
+                blocklist[index] = blocked[keys[index]];
+            }
+        }
+    });
+​
+​
     var xhr = new XMLHttpRequest();
     var url = "functions/suggest.php?action=all";
     xhr.open("POST", url, true);
@@ -31,14 +48,82 @@ function suggested()
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200 && document.getElementById("suggest_name")) {
             suggestion = JSON.parse(xhr.responseText)
-            document.getElementById("suggest_name").textContent = suggestion[0]['User'];
-            //document.getElementById("suggest_name").href = "search.php?user=" + suggestion[0]['User'];
-            info = JSON.parse(suggestion[0]['info'])
-            //console.log(info['dp']);
-            document.getElementById("suggest_img").setAttribute('src', 'img/'+info['dp']);
+​
+            for (let i = 0; i < suggestion.length; i++) {
+                info = JSON.parse(suggestion[i]['info']);
+                name = suggestion[i]['User'];
+                if (!blocklist.includes(name)) {
+                    document.getElementById("suggest_name").textContent = name;
+                    document.getElementById("suggest_img").setAttribute('src', 'img/' + info['dp']);
+                }
+​
+            }
         }
     };
     xhr.send();
+}
+​
+function fetchnames(textsrch) {
+​
+    //document.getElementById("testres").innerHTML += textsrch;
+    console.log("hello");
+​
+    if (textsrch) {
+        //alert("hello2");
+        //alert(blocklist);
+        var blocklist = [];
+        $.ajax({
+            url: 'functions/suggest.php?action=blocked',
+            async: false,
+            cache: false,
+            dataType: "html",
+            success: function (list) {
+​
+                suggestion = JSON.parse(list);
+                var blocked = JSON.parse(suggestion["blocklist"]);
+                var keys = Object.keys(blocked);
+                for (let index = 0; index < keys.length; index++) {
+                    blocklist[index] = blocked[keys[index]];
+                }
+                // console.log("BLOCKLIST: \n"+blocklist);
+            }
+        });
+        console.log("SUGGESTED: \n" + blocklist);
+        var xhr = new XMLHttpRequest();
+        var url = "functions/funcs.php";
+        var newvars = "fetchnames=" + textsrch;
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+​
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                chkstat = JSON.parse(xhr.responseText);
+                document.getElementById("results").innerHTML = "";
+                if (chkstat.length > 0) {
+                    for (var i = 0; i < chkstat.length; i++) {
+                        name = chkstat[i]['User'];
+                        if (!blocklist.includes(name)) {
+                            var a = document.createElement('a');
+                            var linkText = document.createTextNode(name);
+                            a.appendChild(linkText);
+                            a.id = name;
+                            a.title = name + '<br>';
+                            a.href = "localhost:8080/Matcha/search.php?user=" + name;
+                            a.target = "blank";
+                            document.getElementById("results").appendChild(a);
+                            document.getElementById("results").innerHTML += "<br>";
+                        }
+                            
+                    }
+                } else {
+                    document.getElementById("results").innerHTML = "No results";
+                }
+​
+​
+            }
+        };
+        xhr.send(newvars);
+    }
 }
 
 function deletepic()
