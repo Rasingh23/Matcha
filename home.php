@@ -1,6 +1,6 @@
 <?php session_start();
 try{
-
+var_dump($_SESSION);
   $con = new PDO("mysql:host=localhost", "root", "123456");
   $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $con->query("USE matcha");

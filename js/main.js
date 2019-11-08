@@ -42,26 +42,39 @@ function suggested() {
 ​
 ​
     var xhr = new XMLHttpRequest();
-    var url = "functions/suggest.php?action=all";
+    var url = "functions/suggest.php?action=age&action=all";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200 && document.getElementById("suggest_name")) {
             suggestion = JSON.parse(xhr.responseText)
-​
+            console.log(suggestion);
             for (let i = 0; i < suggestion.length; i++) {
                 info = JSON.parse(suggestion[i]['info']);
+                console.log(info);
                 name = suggestion[i]['User'];
                 if (!blocklist.includes(name)) {
                     document.getElementById("suggest_name").textContent = name;
                     document.getElementById("suggest_img").setAttribute('src', 'img/' + info['dp']);
                 }
-​
             }
         }
     };
     xhr.send();
 }
+
+      var count = 3;
+      var names = ['John', 'Anna', 'Marta', 'Mike', 'Alexandre', 'Olivier',  'Elisabeth', 'Angelina', 'Sophie'];
+      var namesContainer = document.getElementsByClassName('pwr-ranking-name');
+      setInterval(function (){
+        for(var i = 0; i<3; i++){
+          namesContainer[i].innerHTML = '#' + (count+1) + ' ' + names[count];
+          count++;
+          if(count == names.length){
+            count = 0;
+          };
+        }
+      }, 3000);
 ​
 function fetchnames(textsrch) {
 ​
