@@ -1,29 +1,50 @@
-
 $(document).ready(function () {
-suggested();
+    suggested();
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
 });
 
 window.onload = function () {
 
     //suggested();
-    
+
     var searchBtn = document.getElementById("srchBtn");
     //var searchTxt = document.getElementById("srchBox");
     var res = document.getElementById("results");
 
 
-    if (document.getElementById("del"))
-    {
-    document.getElementById("del").addEventListener('click', function() {
-        deletepic();
-    });
+    if (document.getElementById("del")) {
+        document.getElementById("del").addEventListener('click', function () {
+            deletepic();
+        });
     }
 }
 
 
 
-function suggested()
-{
+function suggested() {
+    var blocklist = [];
+    $.ajax({
+        url: 'functions/suggest.php?action=blocked',
+        async: false,
+        cache: false,
+        dataType: "html",
+        success: function (list) {
+
+            suggestion = JSON.parse(list);
+            var blocked = JSON.parse(suggestion["blocklist"]);
+            var keys = Object.keys(blocked);
+            for (let index = 0; index < keys.length; index++) {
+                blocklist[index] = blocked[keys[index]];
+            }
+        }
+    });
+
+
     var xhr = new XMLHttpRequest();
     var url = "functions/suggest.php?action=all";
     xhr.open("POST", url, true);
@@ -31,51 +52,51 @@ function suggested()
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200 && document.getElementById("suggest_name")) {
             suggestion = JSON.parse(xhr.responseText)
-            document.getElementById("suggest_name").textContent = suggestion[0]['User'];
-            //document.getElementById("suggest_name").href = "search.php?user=" + suggestion[0]['User'];
-            info = JSON.parse(suggestion[0]['info'])
-            //console.log(info['dp']);
-            document.getElementById("suggest_img").setAttribute('src', 'img/'+info['dp']);
+
+            for (let i = 0; i < suggestion.length; i++) {
+                info = JSON.parse(suggestion[i]['info']);
+                name = suggestion[i]['User'];
+                if (!blocklist.includes(name)) {
+                    document.getElementById("suggest_name").textContent = name;
+                    document.getElementById("suggest_img").setAttribute('src', 'img/' + info['dp']);
+                }
+
+            }
         }
     };
     xhr.send();
 }
 
-function deletepic()
-{
-    if (document.getElementById("img3").style.display == "block")
-    {
+function deletepic() {
+    if (document.getElementById("img3").style.display == "block") {
         src = document.getElementById("img3").src;
         document.getElementById("img3").setAttribute('src', null);
         document.getElementById("img3").style.display = "none";
     }
-    else if (document.getElementById("img2").style.display == "block")
-    {
+    else if (document.getElementById("img2").style.display == "block") {
         src = document.getElementById("img2").src;
         document.getElementById("img2").setAttribute('src', null);
         document.getElementById("img2").style.display = "none";
     }
-    else if (document.getElementById("img1").style.display == "block")
-    {
+    else if (document.getElementById("img1").style.display == "block") {
         src = document.getElementById("img1").src;
         document.getElementById("img1").setAttribute('src', null);
         document.getElementById("img1").style.display = "none";
     }
-    else
-    {
+    else {
         src = document.getElementById("img0").src;
         document.getElementById("img0").setAttribute('src', null);
         document.getElementById("img0").style.display = "none";
     }
     var hr = new XMLHttpRequest();
     var url = "delete.php";
-    var formData = "src="+src;
+    var formData = "src=" + src;
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     hr.onreadystatechange = function () {
         if (hr.readyState == 4 && hr.status == 200) {
             var return_data = hr.responseText;
-  
+
         }
     }
     hr.send(formData);
@@ -84,10 +105,29 @@ function deletepic()
 function fetchnames(textsrch) {
 
     //document.getElementById("testres").innerHTML += textsrch;
+    console.log("hello");
 
     if (textsrch) {
+        //alert("hello2");
+        //alert(blocklist);
+        var blocklist = [];
+        $.ajax({
+            url: 'functions/suggest.php?action=blocked',
+            async: false,
+            cache: false,
+            dataType: "html",
+            success: function (list) {
 
-
+                suggestion = JSON.parse(list);
+                var blocked = JSON.parse(suggestion["blocklist"]);
+                var keys = Object.keys(blocked);
+                for (let index = 0; index < keys.length; index++) {
+                    blocklist[index] = blocked[keys[index]];
+                }
+                // console.log("BLOCKLIST: \n"+blocklist);
+            }
+        });
+        console.log("SUGGESTED: \n" + blocklist);
         var xhr = new XMLHttpRequest();
         var url = "functions/funcs.php";
         var newvars = "fetchnames=" + textsrch;
@@ -100,17 +140,19 @@ function fetchnames(textsrch) {
                 document.getElementById("results").innerHTML = "";
                 if (chkstat.length > 0) {
                     for (var i = 0; i < chkstat.length; i++) {
-
-                        var a = document.createElement('a');
-                        var linkText = document.createTextNode(chkstat[i]['User']);
-                        a.appendChild(linkText);
-                        a.id = chkstat[i]['User'];
-                        a.title = chkstat[i]['User'] + '<br>';
-                        a.href = "localhost:8080/Matcha/search.php?user=" + chkstat[i]['User'];
-                        a.target = "blank";
-                        document.getElementById("results").appendChild(a);
-                        document.getElementById("results").innerHTML += "<br>";
-
+                        name = chkstat[i]['User'];
+                        if (!blocklist.includes(name)) {
+                            var a = document.createElement('a');
+                            var linkText = document.createTextNode(name);
+                            a.appendChild(linkText);
+                            a.id = name;
+                            a.title = name + '<br>';
+                            a.href = "localhost:8080/Matcha/search.php?user=" + name;
+                            a.target = "blank";
+                            document.getElementById("results").appendChild(a);
+                            document.getElementById("results").innerHTML += "<br>";
+                        }
+                            
                     }
                 } else {
                     document.getElementById("results").innerHTML = "No results";

@@ -57,12 +57,17 @@ catch (PDOException $e) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/explore.js"></script>
 <script src="js/main.js"></script>
 <script src="js/upload.js"></script>
 <script src="js/locate.js"></script>
 <script src="js/notify.js"></script>
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
+
+    input[type=text]{
+        color: black;
+    }
 
 .dot {
   height: 1%;

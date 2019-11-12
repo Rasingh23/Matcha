@@ -25,7 +25,7 @@ $('document').ready(function () {
         hr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         user = document.getElementById("name").textContent;
         ret = "liked="+liked+"&user="+user+"&uid="+sumn+"&stat="+stat;
-        console.log("FUKK: "+ret);
+        // console.log("FUKK: "+ret);
         hr.send(ret);
     });
 });

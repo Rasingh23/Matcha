@@ -39,7 +39,7 @@ function getNames(){
             if ($value[$key]['user'] == $_SESSION['username'])
                 unset($value[$key]);
         } */
-        /*  DONT LET THE NIGGA SHOW UP IN RESULTS IF HE DA 1 LOGGED IN */
+        /*  DONT LET THE NIGGA SHOW UP IN RESULTS IF HE DA 1 LOGGED IN OT BLOCKED*/
        echo json_encode($info);
     }
     catch (PDOException $e) {

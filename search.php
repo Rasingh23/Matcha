@@ -59,6 +59,8 @@ try {
     print "Error : " . $e->getMessage() . "<br/>";
     die();
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +73,7 @@ try {
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/redirect.js">
 <script src="js/main.js"></script>
 <script src="js/like.js"></script>
 <script src="js/block.js"></script>
@@ -227,7 +230,7 @@ foreach ($GLOBALS['a']['tags'] as $nu) {
 
       <!-- Suggested -->
       <button class="w3-btn w3-red" style="text-shadow:1px 1px 0 #444" id="Report"> <a href="report.php"><b>Report</b> </a></button>
-      <button class="w3-btn w3-black" style="text-shadow:1px 1px 0 #444" id="block" onclick="block()"><b>Block</b></button>
+      <button class="w3-btn w3-black" style="text-shadow:1px 1px 0 #444" id="btnblock"  onclick="block()"><b>Block</b></button>
       <br>
       <br>
 <?php

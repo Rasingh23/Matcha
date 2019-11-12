@@ -7,13 +7,29 @@ if ($_SESSION['gender'] == 'male') {
 }
 
 switch ($_REQUEST['action']) {
+    case 'blocked': 
+    try {
+        $con = new PDO("mysql:host=localhost", "root", "123456");
+        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $con->query("Use matcha");
+        $stmt = $con->prepare("SELECT `blocklist` FROM `users` WHERE `userID` = :id");
+        $stmt->bindParam(':id', $_SESSION['id']);
+        $stmt->execute();
+        $info = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode ($info);
+        return;
+        $con = null;
+    } catch (PDOException $e) {
+        print "Error : " . $e->getMessage() . "<br/>";
+        die();
+    }
     case 'all':
     try {
         if ($_SESSION['pref'] == 'straight') {
             $con = new PDO("mysql:host=localhost", "root", "123456");
             $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $con->query("USE matcha");
-            $stmt = $con->prepare("SELECT * FROM `users` WHERE json_unquote(json_extract(`info`, '$.gender')) = :gender AND NOT json_unquote(json_extract(`info`, '$.pref')) = 'gay' AND NOT `userID` = :id");
+            $stmt = $con->prepare("SELECT * FROM `users` WHERE json_unquote(json_extract(`info`, '$.gender')) = :gender AND NOT json_unquote(json_extract(`info`, '$.pref')) = 'gay' AND NOT `userID` = :id /* AND NOT $.User IN '${$blocked}') */");
             $stmt->bindParam(':id', $_SESSION['id']);
             $stmt->bindParam(':gender', $gender);
             $stmt->execute();
@@ -180,5 +196,4 @@ switch ($_REQUEST['action']) {
     }
         break;
 }
-
     echo json_encode ($info);
