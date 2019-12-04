@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+    console.log("BITCHES");
 suggested();
 });
 
@@ -23,6 +24,7 @@ window.onload = function () {
 
 
 function suggested() {
+    console.log("IN IT")
     var blocklist = [];
     $.ajax({
         url: 'functions/suggest.php?action=blocked',
@@ -30,7 +32,6 @@ function suggested() {
         cache: false,
         dataType: "html",
         success: function (list) {
-​
             suggestion = JSON.parse(list);
             var blocked = JSON.parse(suggestion["blocklist"]);
             var keys = Object.keys(blocked);
@@ -39,10 +40,8 @@ function suggested() {
             }
         }
     });
-​
-​
     var xhr = new XMLHttpRequest();
-    var url = "functions/suggest.php?action=age&action=all";
+    var url = "functions/suggest.php?action=all";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
@@ -63,24 +62,21 @@ function suggested() {
     xhr.send();
 }
 
-      var count = 3;
-      var names = ['John', 'Anna', 'Marta', 'Mike', 'Alexandre', 'Olivier',  'Elisabeth', 'Angelina', 'Sophie'];
-      var namesContainer = document.getElementsByClassName('pwr-ranking-name');
-      setInterval(function (){
-        for(var i = 0; i<3; i++){
-          namesContainer[i].innerHTML = '#' + (count+1) + ' ' + names[count];
-          count++;
-          if(count == names.length){
-            count = 0;
-          };
-        }
-      }, 3000);
-​
+    //   var count = 3;
+    //   var names = ['John', 'Anna', 'Marta', 'Mike', 'Alexandre', 'Olivier',  'Elisabeth', 'Angelina', 'Sophie'];
+    //   var namesContainer = document.getElementsByClassName('pwr-ranking-name');
+    //   setInterval(function (){
+    //     for(var i = 0; i<3; i++){
+    //       namesContainer[i].innerHTML = '#' + (count+1) + ' ' + names[count];
+    //       count++;
+    //       if(count == names.length){
+    //         count = 0;
+    //       };
+    //     }
+    //   }, 3000);
 function fetchnames(textsrch) {
-​
     //document.getElementById("testres").innerHTML += textsrch;
     console.log("hello");
-​
     if (textsrch) {
         //alert("hello2");
         //alert(blocklist);
@@ -91,7 +87,6 @@ function fetchnames(textsrch) {
             cache: false,
             dataType: "html",
             success: function (list) {
-​
                 suggestion = JSON.parse(list);
                 var blocked = JSON.parse(suggestion["blocklist"]);
                 var keys = Object.keys(blocked);
@@ -108,7 +103,6 @@ function fetchnames(textsrch) {
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
-​
             if (xhr.readyState == 4 && xhr.status == 200) {
                 chkstat = JSON.parse(xhr.responseText);
                 document.getElementById("results").innerHTML = "";
@@ -126,7 +120,7 @@ function fetchnames(textsrch) {
                             document.getElementById("results").appendChild(a);
                             document.getElementById("results").innerHTML += "<br>";
                         }
-                            
+                           
                     }
                 } else {
                     document.getElementById("results").innerHTML = "No results";
