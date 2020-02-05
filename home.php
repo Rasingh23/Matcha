@@ -1,328 +1,325 @@
-<?php session_start();
-try{
+<?php
+require_once 'core/init.php';
+$db = DB::getInstance();
+$user = new user;
+$userProfile = json_decode($user->data()->profile);
 
-  $con = new PDO("mysql:host=localhost", "root", "123456");
-  $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $con->query("USE matcha");
-  $stmt = $con->prepare("SELECT * FROM `users` WHERE `User`=:user");
-  $stmt->bindParam(':user', $_SESSION['username']);
-  $stmt->execute();
-  $info = $stmt->fetch(PDO::FETCH_ASSOC);
-  $new = json_decode($info['info'], true) ;
- /*  $notify = json_decode($info['notify'], true); */
-/*   $count = count($notify); */
-  $_SESSION['dp'] = "img/".$new['dp']; 
-  $_SESSION['bio'] = $new['bio'];
-  $_SESSION['age'] = $new['age'];
-  $_SESSION['gender'] = $new['gender'];
-  $_SESSION['location'] = $new['location'];
-  $GLOBALS['a'] = $new;
-  $_SESSION['pref'] = $new['pref'];
-  $con = null;
-}
-catch (PDOException $e) {
-
-  print "Error : ".$e->getMessage()."<br/>";
-  die();
-}
-try{
-
-  $con = new PDO("mysql:host=localhost", "root", "123456");
-  $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $con->query("USE matcha");
-  $stmt = $con->prepare("SELECT * FROM `likes` WHERE `likee_id` = :id AND `liker_stat` = 1 OR `liker_id` = :id AND `likee_stat` = 1");
-  $stmt->bindParam(':id', $_SESSION['id']);
-  $stmt->execute();
-  $GLOBALS['rating'] = $stmt->rowCount();
-  $con = null;
-}
-catch (PDOException $e) {
-
-  print "Error : ".$e->getMessage()."<br/>";
-  die();
-}
-?>
-
-<!DOCTYPE html>
-<html>
-<title>Home</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/search.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/upload.js"></script>
-<script src="js/locate.js"></script>
-<script src="js/notify.js"></script>
-<style>
-    html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
-
-.dot {
-  height: 1%;
-  width: 3%;
-  background-color: green;
-  border-radius: 50%;
-  margin-left: 2%;
-}
-
-</style>
-
-<body class="w3-theme-l5">
-    <!-- Navbar -->
-    <div class="w3-top w3-animate-top">
-        <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-            <a href="home.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 w3-animate-left"><i class="fa fa-home w3-margin-right"></i></a>
-            <a href="stat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
-                title="Stats"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></a>
-            <a href="edit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
-                title="Account Settings"><i class="fa fa-user"></i></a>
-            <a href="chat.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-right"
-                title="Messages"><i class="fa fa-envelope"></i></a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-button w3-padding-large w3-animate-left" title="Notifications"><i class="fa fa-bell"></i><span id = "notifycount"
-                        class="w3-badge w3-right w3-small w3-green"></span></button>
-                <div class="w3-dropdown-content w3-card-4 w3-bar-block" id="notify" style="width:300px">
-                </div>
-            </div>
-            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white w3-animate-zoom"
-                title="My Account">
-                <img onmouseover="switchani(this)" src="img/bg.jpg" class="w3-circle w3-spin" style="height:23px;width:23px"
-                    alt="Avatar">
-
-                <script>
-                    function switchani(item){
-        item.className = "w3-circle w3-spin";
-      }
-      </script>
-            </a>
-            <a href="exit.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-animate-left"
-                title="News"><i class="glyphicon glyphicon-log-out"></i></a>
-            <div class="search-container">
-                <form action="/action_page.php">
-                    <input id="srchBox" type="text" placeholder="Search.." name="search" onkeyup='fetchnames(this.value)'>
-                    <button id="srchBtn" type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Navbar on small screens -->
-    <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
-        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
-        <a href="chat.php" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
-        <a href="edit.php" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
-    </div>
-
-    <!-- Page Container -->
-    <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
-        <!-- The Grid -->
-        <div class="w3-row">
-            <!-- Left Column -->
-            <div class="w3-col m3">
-                <!-- Profile -->
-                <div class="w3-card w3-round w3-white">
-                    <div class="w3-container">
-                        <h4 class="w3-center">
-                            <?php echo $_SESSION["username"] ?>
-                        </h4>
-                        <p class="w3-center"><img id='dp' src=<?php echo $_SESSION['dp'];?> class="w3-circle"
-                            style="height:106px;width:106px" alt="Avatar"></p>
-                        <hr>
-                        <p><i class="fa dot fa-fw w3-margin-right w3-text-theme"></i></span>online</p>
-                        <p id="locate"><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i><?php echo $_SESSION['location']?></p>
-                        <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
-                            <?php echo $_SESSION['age']?> years old</p>
-                        <p><i style="font-size:100%;color:gold;" class="fa fa-fw w3-margin-right ">&starf;</i>
-                            <?php echo $GLOBALS['rating']?>
-                        </p>
-                    </div>
-                </div>
-                <br>
-
-
-
-                <!-- Interests -->
-                <div class="w3-card w3-round w3-white w3-hide-small">
-                    <div class="w3-container">
-                        <p>Interests</p>
-                        <p>
-                            <?php
-          foreach ($GLOBALS['a']['tags'] as $nu) {
-            echo '<span class="w3-tag w3-small w3-theme-d5">'.$nu.'</span><br>';
-          }
-            //
-            ?>
-                        </p>
-                    </div>
-                </div>
-                <br>
-
-                <!-- Modal for full size images on click-->
-                <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-                    <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
-                    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-                        <img id="img01" class="w3-image">
-                        <p id="caption"></p>
-                    </div>
-                </div>
-
-                <!-- Suggested -->
-
-                <div class="w3-card w3-round w3-white w3-center">
-                    <div class="w3-container">
-                        <p>Suggested</p>
-                        <img id="suggest_img" src="" alt="Avatar" style="width:50%"><br>
-                        <a onclick='redirect(this)' id = "suggest_name">Jane Doe</a>
-                    </div>
-                    <a href="explore.php">see more profiles</a>
-                </div>
-
-                <!-- End Left Column -->
-            </div>
-
-            <!-- Middle Column -->
-            <div class="w3-col m7" style="padding:0px 10px 10px 10px">
-
-                <div class="w3-row">
-                    <div class="w3-col m12">
-                        <div class="w3-card w3-round w3-white">
-                            <div class="w3-container w3-padding">
-                                <h6 class="w3-opacity">About me:</h6>
-                                <p contenteditable="true" class="w3-border w3-padding">
-                                    <?php echo $_SESSION['bio'] ?>
-                                </p>
-                                <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Update</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="w3-third" style="padding:5px 5px 5px 5px;">
-                    <div class=" w3-margin-bottom">
-                        <img id='img0' class="w3-round-medium " style="width:100%;display:none;" onclick="onClick(this)"
-                            alt="img0">
-                    </div>
-                    <img id='img1' class="w3-round-medium" style="width:100%;display:none;" onclick="onClick(this)" alt="img1">
-                </div>
-                <div class="w3-third" style=" padding:5px 5px 5px 5px">
-
-                    <div class=" w3-margin-bottom">
-                        <img id='img2' class="w3-round-medium" style="width:100%;display:none;" onclick="onClick(this)"
-                            alt="img2">
-                    </div>
-                    <img id='img3' class="w3-round-medium" style="width:100%;display:none;" onclick="onClick(this)" alt="img3">
-                </div>
-                <br>
-
-                <input type="submit" onclick="newimg()" class="w3-green" value="Upload Image" id="add" name="submit">
-                <form id="form">
-                    <input type="file" name="userpic" id="userpic" style="display:none">
-                </form>
-                <img id="newimg" style="display:none;">
-                <br> <button id="del">delete</button>
-            </div>
-            <!-- End Middle Column -->
-
-
-            <!-- Right Column -->
-
-            <!-- <div style="float:right;border:solid; height:500px;">
-  hi -->
-
-            <!-- Right Column -->
-            <div class="w3-col m2 w3-right">
-
-                <div class="w3-card w3-round w3-white w3-center" id="results" class="w3-col m3">
-                    .....
-                </div>
-                <!-- <div class="w3-container">
-          <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-        </div> -->
-                <br>
-
-                <br>
-
-                <!-- End Right Column -->
-            </div>
-        </div>
-
-        <!-- End Grid -->
-    </div>
-
-    <!-- End Page Container -->
-    </div>
-    <br>
-
-    <!-- Footer -->
-    <footer class="w3-container w3-theme-d3 w3-padding-16" style="
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   color: white;
-   text-align: center;">
-        <h5>Footer</h5>
-    </footer>
-
-
-    <script>
-function redirect(name)
+function build_list($people)
 {
-    name = document.getElementById('suggest_name');
-    window.location.href = "search.php?user="+ name.textContent;
+	global $db;
+	$profiles = "";
+	foreach ($people as $person => $details) {
+		$info = json_decode($details->profile);
+		$profiles .= '<div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+			<img src="' . $info->dp . '" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px; height:60px">
+			<span class="w3-right w3-opacity">' . $info->last_login . '</span>
+			<h4 style="cursor: pointer;" ><a onclick="build_profile(this)" style="text-decoration: none" href="#'. $details->username .'">' . $details->username . '</a></h4><br>
+			<h5>' . $details->first_name . ' ' . $details->last_name . '</h5>
+			<h5>Age: '. age($info->DOB) .'</h5>
+			<hr class="w3-clear">
+			<div class="w3-row-padding" style="margin:0 -16px">';
+		$images = explode(",", $details->images);
+		foreach ($images as $image => $pic) {
+			$profiles .= '<div class="w3-half">
+				<img src="' . $pic . '" style="max-width:100%" alt="' . $pic . '" class="w3-margin-bottom">
+				</div>';
+		}
+		$profiles .= '</div>
+			</div>';
+	}
+	return $profiles;
 }
-        // Accordion
-        function myFunction(id) {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                x.previousElementSibling.className += " w3-theme-d1";
-            } else {
-                x.className = x.className.replace("w3-show", "");
-                x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-theme-d1", "");
-            }
-        }
 
-        // Used to toggle the menu on smaller screens when clicking on the menu button
-        function openNav() {
-            var x = document.getElementById("navDemo");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
-        // Modal Image Gallery
-        function onClick(element) {
-            document.getElementById("img01").src = element.src;
-            document.getElementById("modal01").style.display = "block";
-            var captionText = document.getElementById("caption");
-            captionText.innerHTML = element.alt;
-        }
-    </script>
+if (input::exists('request')) {
+	if (input::get('all'))
+	{
+		$db->query("DROP TABLE IF EXISTS " . $user->data()->username . "; 
+		CREATE TABLE " . $user->data()->username . " AS (SELECT users.*, GROUP_CONCAT(gallery.img_name) AS 'images', 
+		CAST(JSON_EXTRACT(`profile`, '$.age') AS unsigned) AS 'age',
+		CAST(JSON_EXTRACT(`profile`, '$.fame') AS unsigned) AS 'fame' " . tagCount(input::get('tags')) . ",
+		CAST('0' AS unsigned) AS 'distance'
+		FROM `users` JOIN gallery ON gallery.user_id = users.user_id  
+		WHERE `users`.`user_id` != ?
+		AND (SELECT JSON_SEARCH(`blocked`, 'all', '".$user->data()->username ."')) IS NULL 
+		AND " .preference(json_decode($user->data()->profile)) ." 
+		GROUP BY users.user_id);", array('users.user_id' => $user->data()->user_id));	
+		
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		distanceUpdate($people);
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		//filter people according to prefs/interests blahblah then print them
+		if (empty($people))
+		{
+			echo '<div class="w3-container w3-card w3-white w3-round w3-margin">
+			<h1> <strong> NO RESAULTS </strong> </h1>
+			</div>';
+		}
+		else
+			echo build_list($people);
+	}
+	else if (input::get("filter"))
+	{
+		$min = 18;
+		$max = 100;
+		$fame = 0;
+		$location = "";
 
-</body>
+		if (input::get("minAge") != "")
+			$min = intval(input::get("minAge"));
+		if (input::get("maxAge") != "")
+			$max = intval(input::get("maxAge"));
+		if (input::get("fame_greater") != "")
+			$fame = intval(input::get("fame_greater"));
+		if (input::get("locChkBox"))
+			$location = "AND JSON_CONTAINS(`profile`, '\"".$userProfile->location."\"','$.location') = 1";
+		
+		$db->query("DROP TABLE IF EXISTS " . $user->data()->username . "; 
+		CREATE TABLE " . $user->data()->username . " AS (SELECT users.*, GROUP_CONCAT(gallery.img_name) AS 'images', 
+		CAST(JSON_EXTRACT(`profile`, '$.age') AS unsigned) AS 'age',
+		CAST(JSON_EXTRACT(`profile`, '$.fame') AS unsigned) AS 'fame' " . tagCount(input::get('tags')) . ",
+		CAST('0' AS unsigned) AS 'distance'
+		FROM `users` JOIN gallery ON gallery.user_id = users.user_id  
+		WHERE `users`.`user_id` != ?
+		AND (SELECT JSON_SEARCH(`blocked`, 'all', '".$user->data()->username ."')) IS NULL 
+		AND " .preference(json_decode($user->data()->profile)) . interest(input::get('tags')). $location ." 
+		AND CAST(JSON_EXTRACT(`profile`, '$.age') AS unsigned) BETWEEN ".$min." AND ".$max." 
+		AND CAST(JSON_EXTRACT(`profile`, '$.fame') AS unsigned) >= ".$fame."
+		GROUP BY users.user_id);", array('users.user_id' => $user->data()->user_id));
+		
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		distanceUpdate($people);
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		//filter people according to prefs/interests blahblah then print them
+		if (empty($people))
+		{
+			echo '<div class="w3-container w3-card w3-white w3-round w3-margin">
+			<h1> <strong> NO RESAULTS </strong> </h1>
+			</div>';
+		}
+		else
+			echo build_list($people);
+		
+	}
+	else if (input::get('search')) {
 
-</html>
+		$db->query("DROP TABLE IF EXISTS " . $user->data()->username . "; 
+		CREATE TABLE " . $user->data()->username . " AS (SELECT users.*, GROUP_CONCAT(gallery.img_name) AS 'images', 
+		CAST(JSON_EXTRACT(`profile`, '$.age') AS unsigned) AS 'age',
+		CAST(JSON_EXTRACT(`profile`, '$.fame') AS unsigned) AS 'fame' " . tagCount(input::get('tags')) . ",
+		CAST('0' AS unsigned) AS 'distance'
+		FROM `users` JOIN gallery ON gallery.user_id = users.user_id  
+		WHERE `users`.`user_id` != ?
+		AND (SELECT JSON_SEARCH(`blocked`, 'all', '".$user->data()->username ."')) IS NULL 
+		AND " .preference(json_decode($user->data()->profile)) ." AND `username` LIKE ? GROUP BY users.user_id);",
+		array('user_id' => $user->data()->user_id, 'username' => "%" . input::get('search') . "%"));
+
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		distanceUpdate($people);
+		$db->query("SELECT * FROM " . $user->data()->username); 
+		$people = $db->results();
+		if (empty($people))
+		{
+			echo '<div class="w3-container w3-card w3-white w3-round w3-margin">
+			<h1> <strong> NO RESAULTS </strong> </h1>
+			</div>';
+		}
+		else
+			echo build_list($people);
+	}
+	elseif (input::get('sort')) {
+		$age = input::get('sortAge') == "ascending" ? "ASC" : "DESC";
+		$distance = input::get('sortLoc') == "ascending" ? "ASC" : "DESC";
+		$fame = input::get('sortFame') == "ascending" ? "ASC" : "DESC";
+		$tagCount = input::get('sortInter') == "ascending" ? "ASC" : "DESC";
+		$order = " ORDER BY `age` " . $age .", `distance` " . $distance . ", `fame` " . $fame . ", `tagCount` " . $tagCount ;
+		// echo $order;
+		$db->query("SELECT * FROM " . $user->data()->username . $order); 
+		$people = $db->results();
+		if (empty($people))
+		{
+			echo '<div class="w3-container w3-card w3-white w3-round w3-margin">
+			<h1> <strong> NO RESAULTS </strong> </h1>
+			</div>';
+		}
+		else
+			echo build_list($people);
+		// var_dump($_REQUEST);
+	}
+	
+}
+	
+
+function preference($profile)
+{
+	$gender = '';
+	if ($profile->preference == "Female")
+	{
+		$gender = "JSON_EXTRACT(`profile`, '$.gender') = 'Female' AND 
+					(JSON_EXTRACT(`profile`, '$.preference') = 'Male' OR 
+					JSON_EXTRACT(`profile`, '$.preference') = 'BI-SEXUAL')";
+	}
+	elseif ($profile->preference == "Male") 
+	{	
+		$gender = "JSON_EXTRACT(`profile`, '$.gender') = 'Male' AND 
+					(JSON_EXTRACT(`profile`, '$.preference') = 'Male' OR 
+					JSON_EXTRACT(`profile`, '$.preference') = 'BI-SEXUAL')";
+	}
+	else
+	{
+		$gender = "(JSON_EXTRACT(`profile`, '$.gender') = 'Female' OR 
+					JSON_EXTRACT(`profile`, '$.gender') = 'Male')";
+		if ($profile->gender == "Male") {
+			$gender .= " AND (JSON_EXTRACT(`profile`, '$.preference') = 'Male' OR 
+							JSON_EXTRACT(`profile`, '$.preference') = 'BI-SEXUAL')";
+		} else {
+			$gender .= " AND (JSON_EXTRACT(`profile`, '$.preference') = 'Female' OR 
+							JSON_EXTRACT(`profile`, '$.preference') = 'BI-SEXUAL')";
+		}	
+	}	
+	return $gender;
+}
+function interest($tags) {
+	$interest = '';
+	if (empty($tags))
+		return $interest;
+ 	foreach ($tags as $key => $value) {
+		$interest .= "JSON_CONTAINS(`profile`, '{\"".$value."\":\"".$value."\"}' ,'$.interest') = 1 OR ";
+	}
+	$interest = trim($interest);
+	if ($interest == '')
+		return $interest;
+	else
+		return "AND (". substr($interest, 0 , strlen($interest) - 3) .")";
+}
+
+function tagCount($tags)
+{
+	$interest = '';
+	if (empty($tags))
+		return ", 0 AS tagCount";;
+ 	foreach ($tags as $key => $value) {
+		$interest .= "JSON_CONTAINS(`profile`, '{\"".$value."\":\"".$value."\"}' ,'$.interest') +";
+	}
+	$interest = trim($interest);
+	if ($interest == '')
+		return ", 0 AS tagCount";
+	else
+		return ", ". substr($interest, 0 , strlen($interest) - 2) ." AS tagCount";
+}
+
+function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+
+	$theta = $lon1 - $lon2;
+	$dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+	$dist = acos($dist);
+	$dist = rad2deg($dist);
+	$miles = $dist * 60 * 1.1515;
+	$unit = strtoupper($unit);
+  
+	if ($unit == "K") {
+		return ($miles * 1.609344);
+	} else if ($unit == "N") {
+		return ($miles * 0.8684);
+	} else {
+		return $miles;
+	}
+  }
+
+  function distanceUpdate($people)
+{
+	global $userProfile;
+	global $db;
+	global $user;
+	foreach ($people as $person => $details) {
+		$info = json_decode($details->profile);
+		$db->update($user->data()->username, $details->user_id, array('distance' => distance(floatval($userProfile->lat),floatval($userProfile->lng),floatval($info->lat),floatval($info->lng),'K')));
+	}
+}
+	
+	
+// get all users
+// SELECT * FROM `users` WHERE (`user_id` != ?) AND (SELECT JSON_SEARCH(`blocked`, 'all', 'Black_Cupid')) IS NULL AND JSON_EXTRACT(`profile`, '$.gender') = 'Female' AND (JSON_EXTRACT(`profile`, '$.preference') = 'Male' OR JSON_EXTRACT(`profile`, '$.preference') = 'BI-SEXUAL')
+// SELECT * FROM `users` WHERE JSON_CONTAINS(`profile`, '{"GAMING":"GAMING"}' ,"$.interest") = 1 ORDER BY JSON_LENGTH(`profile`, '$.interest') DESC	
+	
+// (SELECT SUM(JSON_CONTAINS(`profile`, '{"GAMING":"GAMING"}' ,"$.interest") + JSON_CONTAINS(`profile`, '{"ART":"ART"}' ,"$.interest")) AS test FROM users
+	
+	
+	
+	
+	
+	
+	
+	
+	/* else if (input::get('profile'))
+	{
+		$user2 = new user(input::get('profile'));
+		$views = json_decode($user2->data()->views);
+		$pro = json_decode($user2->data()->profile);
+		$pro->fame += 2;
+		$user2->update(array('profile' => json_encode($pro)), $user2->data()->user_id);
+		if ($views){
+			if (!in_array($user->data()->username, $views)){
+				$views[] = $user->data()->username;
+				$user2->update(array('views' => json_encode($views)), $user2->data()->user_id);
+			}
+		}
+		else{
+			$views[] = $user->data()->username;
+			$user2->update(array('views' => json_encode($views)), $user2->data()->user_id);
+		}
+		$db->query("SELECT users.*, gallery.img_name, likes.* FROM `users` LEFT JOIN gallery ON gallery.user_id = users.user_id Left JOIN likes ON likes.liker_id = users.user_id OR likes.likee_id = users.user_id WHERE username =  ?", array('username' => input::get('profile')));
+		$data = $db->results();
+		echo json_encode($data);
+	}else if (input::get('likestatus')){
+		if (input::get('me') == "liker"){
+
+			$db->query("INSERT INTO `likes` (`liker_id`, `likee_id`, `chat` ) VALUES (?, ?,'{}') ON DUPLICATE KEY UPDATE `liker_stat` = NOT `liker_stat`", array('liker_id' => intval($user->data()->user_id), 'likee' => intval(input::get('them'))));
+			$db->query("SELECT `likee_stat` FROM `likes` WHERE `liker_id` = ? AND `likee_id` = ?", array('liker_id' => intval($user->data()->user_id), 'likee_id' => intval( input::get('them'))));	
+		}	
+		else{
+			$db->query("UPDATE `likes` SET `likee_stat` = NOT `likee_stat` WHERE `liker_id` = ? AND `likee_id` = ?", array('liker_id' => intval( input::get('them')), 'likee_id' => intval($user->data()->user_id)));
+		    $db->query("SELECT `liker_stat` FROM `likes` WHERE `liker_id` = ? AND `likee_id` = ?", array('liker_id' => intval( input::get('them')), 'likee_id' => intval($user->data()->user_id)));
+		}
+		
+		$test = $db->results();
+		echo json_encode($test);
+	}
+
+
+
+
+
+
+
+
+
+	else if (input::get('block')) {
+		$user2 = new user(input::get('block'));
+		$blockee = json_decode($user2->data()->blocked);
+		$blockee->blocker[] = $user->data()->username;
+		// echo json_encode($blockee);
+		$user2->update(array('blocked' => json_encode($blockee)), $user2->data()->user_id);
+		$blocker = json_decode($user->data()->blocked);
+		$blocker->blockee[] = input::get('block');
+		$user->update(array('blocked' => json_encode($blocker)));
+		echo 1;
+
+	
+	
+	}
+	 else if (input::get('blockstat')){
+		$user2 = new user(input::get('blockstat'));
+		$blockee = json_decode($user2->data()->blocked);
+		if (in_array($user->data()->username, $blockee->blockee) || in_array($user->data()->username, $blockee->blocker)){
+			echo 'unblock';
+		}
+		else {
+			echo 'block';
+		}
+	}
+ */

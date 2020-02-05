@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Matcha</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" media="screen" href="css/select2.min.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="css/w3.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="css/theme.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="css/datepicker.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="css/checkbox.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/select2.min.js"></script>
+	<!-- <script src="js/UI.js"></script> -->
+	<style>
+		
+		.error {
+			position: fixed;
+			padding: 7px;
+			bottom: 80px;
+			right: 15px;
+			z-index: 999;
+		}
+
+		html,
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5 {
+			font-family: "Open Sans", sans-serif
+		}
+	</style>
+</head>
+
+<body class="w3-theme-l5">
+
+	<!-- Navbar -->
+	<div id="nav">
+	</div>
+
+	<!-- Main content -->
+	<div id='content'>
+		
+<div id='main_content' class="w3-container w3-content" style="max-width:1400px;margin-top:80px; margin-bottom: 80px">
+	<!-- The Grid -->
+	<div class="w3-row">
+		<!-- Left Column -->
+		<div id="left_column" class="w3-col m3">
+			<!-- Profile -->
+			<div class="w3-card w3-round w3-white">
+				<div class="w3-container">
+					<h4 id="display_username" class="w3-center"></h4>
+					<p class="w3-center"><img id="propic" src="images/site_images/p_placeholder.jpeg" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+					<hr>
+					<p id="display_name"><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i></p>
+					<p id="display_dob"><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i></p>
+					<p id="display_loca"><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i></p>
+					<p id="display_gender"><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i></p>
+				</div>
+			</div>
+			<br>
+
+			<!-- Accordion -->
+			<div class="w3-card w3-round">
+				<div class="w3-white">
+					<button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>
+						My Bio</button>
+					<div id="Demo1" class="w3-hide w3-container">
+						<p id="bio_text">Some text..</p>
+					</div>
+					<button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>
+						My Photos</button>
+					<div id="Demo3" class="w3-hide w3-container">
+						<div id="display_images" class="w3-row-padding" style="max-width: 100%">
+							<br>
+						</div>
+					</div>
+					<button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>
+						My Friends</button>
+					<div id="Demo2" class="w3-hide w3-container">
+						<div id="display_friends" class="w3-row-padding" style="max-width: 100%">
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+
+			<!-- Interests -->
+			<div class="w3-card w3-round w3-white w3-hide-small">
+				<div class="w3-container">
+					<p>Interests</p>
+					<p id="display_interest">
+					</p>
+				</div>
+			</div>
+			<br>
+
+			<!-- Alert Box -->
+			<!-- <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
+				<span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
+					<i class="fa fa-remove"></i>
+				</span>
+				<p><strong>Hey!</strong></p>
+				<p>People are looking at your profile. Find out who.</p>
+			</div> -->
+
+			<!-- End Left Column -->
+		</div>
+
+		<!-- Middle Column -->
+		<div id="middle_column" class="w3-col m7">
+			<div id="search_bar" class="w3-row-padding w3-margin-bottom">
+				<div class="w3-col m12">
+					<div class="w3-card w3-round w3-white">
+						<div class="w3-container w3-padding">
+							<!-- <h6 class="w3-opacity">Search for user</h6> -->
+							<input type="text" style="resize: none;" class="w3-input w3-border w3-round w3-margin-bottom w3-margin-top" id="search" placeholder="Search for users"></input>
+							<!-- <textarea style="resize: none;" class="w3-input w3-border w3-round w3-margin-bottom w3-margin-top" id="search" placeholder="Search for users"></textarea> -->
+							<!-- <p contenteditable="true" class="w3-border w3-padding" id="search"></p> -->
+							<button id="searchBtn" type="button" class="w3-button w3-theme" onclick="search()"><i class="fa fa-search"></i>  Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="middle_content">
+			</div>
+		</div>
+
+		<!-- Right Column -->
+		<div id="right_column" class="w3-col m2">
+
+
+
+
+
+
+			<!-- filtering -->
+			<div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container" sytle="padding: 50px;">
+					<form id="sofil_form" class="w3-container w3-card-4 w3-light-grey w3-text-black w3-margin-top w3-margin-bottom" name="sofilform" method="post">
+						<h5>Filtering</h5>
+						<!-- Age  -->
+
+
+						<label for="">minimum Age</label>
+						<input class="w3-input w3-border w3-round" placeholder="minimum Age" name="minAge" type="number" min=18 max=100 onKeyDown="return false">
+						<br>
+						<label for="">maximum age</label>
+						<input class="w3-input w3-border w3-round" placeholder="maximum Age" name="maxAge" type="number" min=19 max=100 onKeyDown="return false"> 
+						<!-- Location  -->
+						<br>
+						<label label for="locChkBox">Same Location</label><br>
+						<input class='w3-check' type="checkbox" name="locChkBox" id="locChkBox"><br>
+						<!-- fame  -->
+						<label for="">Fame Greater than</label>
+						<br>
+						<input class="w3-input w3-border w3-round" placeholder="Fame Greater than" type="number" name="fame_greater" onKeyDown="return false">
+						<!-- interests  -->
+						<h5 class="w3-center">INTERESTS</h5>
+						<div class="w3-row w3-section">
+							<div class="w3-col" style="width:50px">
+								<!--<i class="w3-xxlarge fa fa-hand-pointer-o"> </i>--></div>
+							<div class="w3-rest">
+								<select id="sofil_select" class="tags" name="tags[]" multiple style="width: 100%">
+									<option value="GAMING">GAMING</option>
+									<option value="DANCING">DANCING</option>
+									<option value="ART">ART</option>
+									<option value="PHOTOGRAPHY">PHOTOGRAPHY</option>
+									<option value="GETING STONED">GETING STONED</option>
+									<option value="READING">READING</option>
+									<option value="CODING">CODING</option>
+									<option value="FOOD">FOOD</option>
+									<option value="SPORTS">SPORTS</option>
+									<option value="FRIENDS">FRIENDS</option>
+								</select>
+							</div>
+						</div>
+						<p class="w3-center">
+							<button id="sofilButton" class="w3-button w3-section w3-black w3-ripple"> Submit </button>
+
+						</p>
+					</form>
+					<!-- <input type="range" min="1" max="100" value="50" class="slider" id="myRange" style="width: 100%"> -->
+				</div>
+
+			</div>
+			<!-- filtering  -->
+
+			<br>
+			<!-- ///////////////////////////////////////////// sorting  -->
+			<div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+					<form id="sorting" class="w3-container w3-card-4 w3-light-grey w3-text-black w3-margin-top w3-margin-bottom" name="sorting" method="post">
+						<h5>SORTING</h5>
+						<!-- Age  -->
+						<label for=""><strong>Age</strong></label>
+						<br>
+							<select name="sortAge" class="tags w3-input w3-border w3-round " id="sortAge">
+								<option value="ascending">ascending</option>
+								<option value="descending">descending</option>
+							</select>
+						<!-- Location  -->
+						<br>
+						<!-- <br> -->
+						<label label for="locChkBox"> <strong>Location</strong></label>
+						<br>
+						<select name="sortLoc" class="tags w3-input w3-border w3-round ">
+							<option value="ascending">ascending</option>
+							<option value="descending">descending</option>
+						</select>
+						<br>
+						<!-- fame  -->
+						<label for=""><strong>Fame</strong></label>
+						<br>
+						<select name="sortFame" class="tags w3-input w3-border w3-round ">
+							<option value="ascending">ascending</option>
+							<option value="descending">descending</option>
+						</select>
+						<!-- interests sorting -->
+						<!-- <h5 class="w3-center">INTERESTS</h5> -->
+						<label for=""><strong>Interests</strong></label>
+						<br>
+						<select name="sortInter" class="tags w3-input w3-border w3-round ">
+							<option value="ascending">ascending</option>
+							<option value="descending">descending</option>
+						</select>
+						<p class="w3-center">
+							<button id="sortingBtn" class="w3-button w3-section w3-black w3-ripple"> Submit </button>
+
+						</p>
+					</form>
+				</div>
+			</div>
+			<br>
+			<div id='error_spot' class=" ">
+			</div>
+			<!-- End Right Column -->
+		</div>
+
+		<!-- End Grid -->
+	</div>
+
+	<!-- End Page Container -->
+</div>
+
+	</div>
+
+	<br>
+
+	<!-- Footer -->
+	<div id='foot'></div>
+</body>
+<script>
+
+$('.tags').select2({
+		placeholder: "select your interests",
+		minimumResultsForSearch: -1
+	});
+// function managescript(script, task) {
+// 	if (task == 'remove')
+// 		$("script[src='js/" + script + "']").remove();
+// 	if (task == 'add')
+// 		$.getScript("js/" + script);
+// }
+
+// managescript('UI.js', 'add')
+// managescript('chat.js', 'add')
+
+</script>
+</html>
+
+
+
+
+
+
+
